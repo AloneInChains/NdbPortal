@@ -1,0 +1,48 @@
+﻿@model NormativeDocumentViewModel
+
+@{
+    ViewData["Title"] = "Normative document";
+}
+
+<h1>Add new normative document</h1>
+<div>
+    <input type="submit" form="mainFieldsForm" value="Create" class="btn btn-primary" />
+    <a class="btn btn-secondary" asp-controller="Home" asp-action="Index">Cancel</a>
+</div>
+
+<hr />
+<div class="container">
+    <div class="row">
+        <div class="offset-md-4 col-md-4 card shadow">
+            <form id="mainFieldsForm" class="form" asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group mt-2">
+                    <label asp-for="@Model.NormativeDocument.DocumentNumber" class="control-label"></label>
+                    <input asp-for="@Model.NormativeDocument.DocumentNumber" class="form-control" />
+                    <span asp-validation-for="@Model.NormativeDocument.DocumentNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.NormativeDocument.DocumentType" class="control-label"></label>
+                    <select asp-for="@Model.NormativeDocument.DocumentTypeId" class ="form-control" asp-items="@Model.NormativeDocumentTypeList"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.NormativeDocument.Description" class="control-label"></label>
+                    <input asp-for="@Model.NormativeDocument.Description" class="form-control" />
+                    <span asp-validation-for="@Model.NormativeDocument.Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.NormativeDocument.ConfidentialityLevel" class="control-label"></label>
+                    <select asp-for="@Model.NormativeDocument.ConfidentialityLevelId" class ="form-control" asp-items="@Model.NormativeDocumentConfLevelList"></select>
+                </div>
+                <div class="form-group mb-2">
+                    @Html.HiddenFor(m => m.NormativeDocument.VersionNumber)
+                    @Html.HiddenFor(m => m.NormativeDocument.MainDocumentId)
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

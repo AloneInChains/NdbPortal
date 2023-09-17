@@ -1,0 +1,28 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+    background: rgb(167,167,167);
+    background: linear-gradient(0deg, rgba(167,167,167,1) 0%, rgba(117,117,117,1) 10%, rgba(247,247,247,1) 100%);
+}
+
+.fa-circle-plus:hover {
+    color: #49d100;
+}
+
+.fa-trash-can:hover {
+    color: crimson;
+}

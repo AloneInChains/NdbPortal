@@ -1,0 +1,140 @@
+﻿@using System.Web
+@model IEnumerable<NdbPortal.Entities.Dtos.NormativeDocument.NormativeDocumentGetWithDetailsDto>
+
+@{
+    ViewData["Title"] = "Normative documents";
+}
+
+<form method="post" asp-controller="Home" asp-action="Delete">
+    <div id="documentDeleteModal" class="modal fade" tabindex="-2" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add file</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure to delete this document?</p>
+                    <div class="form-group">
+                        @Html.Hidden("normativeDocumentId", "", new {@id = "normativeDocumentIdToDelete"})
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@if (TempData["DeletionError"] != null)
+{
+    <div class="toast-container" style="position: absolute; top: 10px; right: 10px;">
+        <div class="toast fade show bg-danger">
+            <div class="toast-header">
+                <strong class="me-auto"><i class="fa-solid fa-circle-exclamation"></i> Error</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body text-white">
+                @TempData["DeletionError"]
+            </div>
+        </div>
+    </div>
+
+}
+
+<div class="container">
+    <div class="row">
+        <div class="text-center">
+            @if(@ViewBag.BackToList != null)
+            {
+                <h1>Search results for @Context.Request.Query["q"].ToString()</h1>
+            }
+            else
+            {
+                <h1>Normative documents</h1>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="float-start">  
+                <button type="button" class="btn btn-primary" value="Create" onclick="location.href='@Url.Action("Create", "NormativeDocument")'">Add new</button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="float-end">  
+                <form class="d-flex" asp-action="Search">   
+                    @if(@ViewBag.BackToList != null)
+                    {
+                        @Html.ActionLink((string)ViewBag.BackToList, "Index");
+                    }
+                    <input type="search" id="seachValue" name="searchValue" class="form-control" />
+                    <input type="submit" class="btn btn-primary" value="Search">
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <div class="row mt-2">
+        <div class="card shadow">
+            <table class="table align-middle mb-0 bg-white">
+                <thead class="bg-light">
+                    <tr>
+                        <th>Document number</th>
+                        <th>Type</th>
+                        <th>Created on</th>
+                        <th>Created by</th>
+                        <th>Version</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var normativeDocument in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="ms-3">
+                                        @Html.ActionLink(@normativeDocument.DocumentNumber, "Edit", "NormativeDocument", new { id=@normativeDocument?.Id }, new {@class="fw-bold mb-1"})
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <p class="fw-normal mb-1">@normativeDocument?.DocumentType?.Name</p>
+                            </td>
+                            <td>
+                                <p class="fw-normal mb-1">@normativeDocument?.CreatedOn.ToString("dd.MM.yyyy HH:mm")</p>
+                            </td>
+                            <td>
+                                <p class="fw-normal mb-1">@normativeDocument?.CreatedBy?.Name @normativeDocument?.CreatedBy?.Surname</p>
+                                <p class="text-muted mb-0">@normativeDocument?.CreatedBy?.Email</p>
+                            </td>
+                            <td>
+                                <p class="fw-normal mb-1">@normativeDocument?.VersionNumber</p>
+                            </td>
+                            <td>
+                                <i class="fa-solid fa-trash-can" data-bs-toggle="modal" data-bs-target="#documentDeleteModal" onclick="deleteNormativeDocument('@normativeDocument.Id')"></i>                                                            
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        function deleteNormativeDocument(id) {
+            $("#normativeDocumentIdToDelete").val(id);
+        }
+    </script>
+
+}

@@ -1,0 +1,410 @@
+﻿@model NormativeDocumentViewModel
+
+@{
+    ViewData["Title"] = "Normative document";
+}
+
+@if (TempData["DeletionError"] != null)
+{
+    <div class="toast-container" style="position: absolute; top: 10px; right: 10px;">
+        <div class="toast fade show bg-danger">
+            <div class="toast-header">
+                <strong class="me-auto"><i class="fa-solid fa-circle-exclamation"></i> Error</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body text-white">
+                @TempData["DeletionError"]
+            </div>
+        </div>
+    </div>
+
+}
+
+<form id="recordDeletionForm" method="post" asp-controller="NormativeDocument" asp-action="">
+    <div id="recordDeleteModal" class="modal fade" tabindex="-2" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add file</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure to delete this document?</p>
+                    <div class="form-group">
+                        @Html.Hidden("recordId", "", new {@id = "recordIdToDelete"})
+                        @Html.Hidden("normativeDocumentId", @Model.NormativeDocument.Id, new {@id = "normativeDocumentDeletionId"})
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<form method="post" enctype="multipart/form-data" asp-controller="NormativeDocument" asp-action="UploadFile">
+    <div id="fileModal" class="modal fade" tabindex="-2" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add file</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <p>Upload File</p>
+                            <input type="file" name="file" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.Hidden("fileNormativeDocumentId", Model.NormativeDocument.Id)
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<form method="post" asp-action="AddApproval" asp-controller="NormativeDocument">
+    <div id="visaCommentModal" class="modal fade" tabindex="-2" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Approve/reject document</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        @Html.Hidden("visaNormativeDocumentId", Model.NormativeDocument.Id, new { @id = "visaCommentModal_NormativeDocumentId" })
+                        @Html.Hidden("approveResult")
+                        <label for="visaComment">Comment:</label>
+                        <textarea class="form-control" id="visaComment" name="visaComment" rows="3"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<form method="post" asp-action="AddRelatedDocument" asp-controller="NormativeDocument">
+    <div id="relatedDocumentsModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add related document</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Related document:</label>
+                        <select name="relatedDocumentId" asp-items="Model.AvailableRelatedDocumentList" class="form-control dropdown"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Relation type:</label>
+                        <select name="relationTypeId" asp-items="Model.AvailableRelationTypeList" class="form-control dropdown"></select>
+                    </div>
+                    <div class="form-group">
+                        @Html.Hidden("relationDocumentId", Model.NormativeDocument.Id)
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<h1>Edit normative document</h1>
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="float-start">
+            <input type="submit" form="mainFieldsForm" value="Save" class="btn btn-primary" />
+            <a class="btn btn" asp-controller="Home" asp-action="Index">Cancel</a>
+            <div class="dropdown d-inline">
+                <button class="btn btn-light dropdown-toggle" type="button" id="visaDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    Approvals
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="visaDropdown">
+                    <li><a id="approveAction" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#visaCommentModal">Approve</a></li>
+                    <li><a id="rejectAction" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#visaCommentModal">Reject</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 ">
+        <div class="float-end">
+            @if(Model.NormativeDocument.MainDocumentId == null)
+            {
+                 <button class="btn btn-outline-success" onclick="location.href='@Url.Action("CreateVersion", new {mainDocumentId = Model.NormativeDocument.Id})'">
+                    <i class="fa-solid fa-code-branch"></i>Add new version
+                </button>               
+            }
+        </div>
+    </div>
+</div>
+
+<div>
+
+</div>
+<hr />
+<div class="container-fluid card shadow">
+    <div class="row mt-2">
+        <div class="col-md-4">
+            <form id="mainFieldsForm" asp-action="Update">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    @Html.HiddenFor(m => m.NormativeDocument.Id, new {})
+                    @Html.HiddenFor(m => m.NormativeDocument.CompanyId, new {})
+                    @Html.HiddenFor(m => m.NormativeDocument.CreatedById, new {})
+                    @Html.HiddenFor(m => m.NormativeDocument.MainDocumentId, new {})
+                    @Html.HiddenFor(m => m.NormativeDocument.VersionNumber, new {})
+                    @Html.HiddenFor(m => m.NormativeDocument.CreatedOn, new {})
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.NormativeDocument.DocumentNumber" class="control-label"></label>
+                    <input asp-for="@Model.NormativeDocument.DocumentNumber" class="form-control" />
+                    <span asp-validation-for="@Model.NormativeDocument.DocumentNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.NormativeDocument.DocumentType" class="control-label"></label>
+                    <select asp-for="@Model.NormativeDocument.DocumentTypeId" class="form-control" asp-items="@Model.NormativeDocumentTypeList"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.NormativeDocument.Description" class="control-label"></label>
+                    <input asp-for="@Model.NormativeDocument.Description" class="form-control" />
+                    <span asp-validation-for="@Model.NormativeDocument.Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.NormativeDocument.ConfidentialityLevel" class="control-label"></label>
+                    <select asp-for="@Model.NormativeDocument.ConfidentialityLevelId" class="form-control" asp-items="@Model.NormativeDocumentConfLevelList"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.NormativeDocument.VersionNumber" class="control-label"></label>
+                    <input asp-for="@Model.NormativeDocument.VersionNumber" class="form-control" disabled />                    
+                </div>                
+                <div class="form-group">
+                    <label asp-for="@Model.NormativeDocument.MainDocument" class="control-label"></label>
+
+                    @if (@Model.NormativeDocument.MainDocument != null)
+                    {
+                        <input asp-for="@Model.NormativeDocument.MainDocument.DocumentNumber" class="form-control" disabled />
+                    }
+                    else
+                    {
+                        <input value="" type="text" class="form-control" disabled />
+                    }                    
+                    <span asp-validation-for="@Model.NormativeDocument.CreatedOn" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.NormativeDocument.CreatedOn" class="control-label"></label>
+                    <input asp-for="@Model.NormativeDocument.CreatedOn" class="form-control" disabled />
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.NormativeDocument.CreatedBy" class="control-label"></label>
+                    <input class="form-control" value="@Model.NormativeDocument.CreatedBy.Name @Model.NormativeDocument.CreatedBy.Surname" disabled />
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.NormativeDocument.Company" class="control-label"></label>
+                    <input asp-for="@Model.NormativeDocument.Company.Name" class="form-control" disabled />
+                </div>
+                <div class="form-group mb-2">
+
+                </div>
+            </form>
+        </div>
+        <div class="col-md-8">
+            <div>
+                <div class="d-flex align-items-baseline">
+                    <h4>Related documents</h4>
+                    <i id="addRelatedDocument" class="fa-solid fa-circle-plus ms-2" data-bs-toggle="modal" data-bs-target="#relatedDocumentsModal"></i>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Related document</th>
+                            <th>Relation type</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.RelatedDocuments == null || Model.RelatedDocuments.Count() == 0)
+                        {
+                            <tr>
+                                <td colspan="4"><p class="fs-4 text-center text-muted">No data</p></td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var relation in Model.RelatedDocuments)
+                            {
+                                <tr>
+                                    <td><a asp-action="Edit" asp-route-id="@relation.RelatedDocument.Id">@relation.RelatedDocument.DocumentNumber</a></td>
+                                    <td>@relation.RelationName</td>
+                                    <td><i class="fa-solid fa-trash-can" data-bs-toggle="modal" data-bs-target="#recordDeleteModal" onclick="deleteRelatedDocument('@relation.RelationId')"></i></td>
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+                </table>
+                <div class="d-flex align-items-baseline mt-5">
+                    <h4>Approvals</h4>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Approver</th>
+                            <th>Comment</th>
+                            <th>Is approved</th>
+                            <th>Created on</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Approvals == null || Model.Approvals.Count() == 0)
+                        {
+                            <tr>
+                                <td colspan="5"><p class="fs-4 text-center text-muted">No data</p></td>
+                            </tr>
+                        }
+                        else
+                        {                  
+                            @foreach (var visa in Model.Approvals)
+                            {
+                                <tr>
+                                    <td>@visa.Approver.Name @visa.Approver.Surname</td>
+                                    <td>@visa.Comment</td>
+                                    <td>@Html.CheckBox(string.Format("chk{0}", visa.Id), @visa.IsApproved, new {@class = "form-check-input", disabled = "disabled"}) </td>
+                                    <td>@visa.CreatedOn.ToString("dd.MM.yyyy HH:mm")</td>
+                                    <td><i class="fa-solid fa-trash-can" data-bs-toggle="modal" data-bs-target="#recordDeleteModal" onclick="deleteVisa('@visa.Id')"></i></td>
+
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+                <div class="d-flex align-items-baseline mt-5">
+                    <h4>Files</h4>
+                    <i id="addFile" class="fa-solid fa-circle-plus ms-2" data-bs-toggle="modal" data-bs-target="#fileModal"></i>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>File name</th>
+                            <th>Uploaded by</th>
+                            <th>Uploaded on</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Files == null || Model.Files.Count() == 0)
+                        {
+                            <tr>
+                                <td colspan="4"><p class="fs-4 text-center text-muted">No data</p></td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var file in Model.Files)
+                            {
+                                <tr>
+                                    <td>@file.FileName</td>
+                                    <td>@string.Format("{0} {1}", @file.CreatedBy.Name, @file.CreatedBy.Surname)</td>
+                                    <td>@file.CreatedOn.ToString("dd.MM.yyyy HH:mm")</td>
+                                    <td><i class="fa-solid fa-trash-can" data-bs-toggle="modal" data-bs-target="#recordDeleteModal" onclick="deleteFile('@file.Id')"></i></td>
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+                </table>
+                <div class="d-flex align-items-baseline mt-5">
+                    <h4>Versions</h4>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Document number</th>
+                            <th>Version</th>
+                            <th>Created by</th>
+                            <th>Created on</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Versions == null || Model.Versions.Count() == 0)
+                        {
+                            <tr>
+                                <td colspan="4"><p class="fs-4 text-center text-muted">No data</p></td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var version in Model.Versions)
+                            {
+                                <tr>
+                                    <td><a asp-action="Edit" asp-route-id="@version.Id">@version.DocumentNumber</a></td>
+                                    <td>@version.VersionNumber</td>
+                                    <td>@string.Format("{0} {1}", @version.CreatedBy.Name, @version.CreatedBy.Surname)</td>
+                                    <td>@version.CreatedOn.ToString("dd.MM.yyyy HH:mm")</td>
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        $("#approveAction").click(function () {
+            $("#approveResult").val(true);         
+        });
+
+        $("#rejectAction").click(function () {
+            $("#approveResult").val(false);         
+        });
+
+        function deleteFile(id) {
+            $('#recordDeletionForm').attr('action', 'DeleteFile')
+            $("#recordIdToDelete").val(id);
+        }
+
+        function deleteVisa(id) {
+            $('#recordDeletionForm').attr('action', 'DeleteVisa')
+            $("#recordIdToDelete").val(id);
+        }
+
+         function deleteRelatedDocument(id) {
+            $('#recordDeletionForm').attr('action', 'DeleteRelatedDocument')
+            $("#recordIdToDelete").val(id);
+        }
+    </script>
+
+}
