@@ -57,6 +57,19 @@ namespace NdbPortal.API.Controllers
             return Ok(employeeResult);
         }
 
+        [HttpGet("WithDetails")]
+        public async Task<ActionResult<EmployeeGetWithDetailsDto>> GetEmployeeWithDetailsAsync(Guid id)
+        {
+            if (!await EmployeeExistsAsync(id))
+            {
+                return NotFound();
+            }
+
+            var employee = await _repository.Employee.GetEmployeeAsync(id);
+            var employeeResult = _mapper.Map<EmployeeGetWithDetailsDto>(employee);
+            return Ok(employeeResult);
+        }
+
         /*[HttpGet("NormativeDocument/{id}")]
         public async Task<ActionResult<EmployeeGetDto>> GetEmployeesByNormativeDocument(Guid id)
         {

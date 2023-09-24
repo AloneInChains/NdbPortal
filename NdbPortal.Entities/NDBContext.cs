@@ -140,6 +140,9 @@ namespace NdbPortal.Entities
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.OrderNumber)
+                    .HasDefaultValue(1);
             });
 
             modelBuilder.Entity<NormativeDocumentFile>(entity =>
