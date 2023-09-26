@@ -135,6 +135,25 @@
     </div>
 </form>
 
+<div class="modal fade" id="previewModal" tabindex="-1" role="dialog" aria-labelledby="documentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="documentModalLabel">Document Preview</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <iframe id="pdfViewer" width="100%" height="600" frameborder="0"></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <h1>Edit normative document</h1>
 
 <div class="row">
@@ -316,6 +335,7 @@
                             <th>Uploaded by</th>
                             <th>Uploaded on</th>
                             <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -333,6 +353,7 @@
                                     <td>@file.FileName</td>
                                     <td>@string.Format("{0} {1}", @file.CreatedBy.Name, @file.CreatedBy.Surname)</td>
                                     <td>@file.CreatedOn.ToString("dd.MM.yyyy HH:mm")</td>
+                                    <td><i class="fa-solid fa-search" onclick="previewFile('@file.Id')"></i></td>
                                     <td><i class="fa-solid fa-trash-can" data-bs-toggle="modal" data-bs-target="#recordDeleteModal" onclick="deleteFile('@file.Id')"></i></td>
                                 </tr>
                             }
@@ -401,9 +422,17 @@
             $("#recordIdToDelete").val(id);
         }
 
-         function deleteRelatedDocument(id) {
+        function deleteRelatedDocument(id) {
             $('#recordDeletionForm').attr('action', 'DeleteRelatedDocument')
             $("#recordIdToDelete").val(id);
+        }
+
+        function previewFile(id) {
+            var iframe = document.getElementById("pdfViewer");
+            iframe.src = "/NormativeDocument/PreviewFile?id="+id;
+
+            // Show the modal
+            $('#previewModal').modal('show');
         }
     </script>
 

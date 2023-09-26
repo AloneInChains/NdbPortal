@@ -16,6 +16,9 @@ builder.Services.AddHttpClient<IWebApiClient, WebApiClient>(options =>
     options.BaseAddress = new Uri(builder.Configuration["ApiUri"]);
     options.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 });
+
+builder.Services.AddSingleton<IAsposeLicenseService>(provider => new AsposeLicenseService(builder.Configuration));
+
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
