@@ -20,5 +20,8 @@ namespace NdbPortal.Entities.Dtos.NormativeDocumentConfidentialityLevel
 
         [JsonPropertyName("description")]
         public string? Description { get; set; }
+        [JsonPropertyName("orderNumber")]
+        public int OrderNumber { get; set; }
+
     }
 }

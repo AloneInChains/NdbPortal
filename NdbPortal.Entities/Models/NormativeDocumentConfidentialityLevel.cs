@@ -14,6 +14,7 @@ namespace NdbPortal.Entities.Models
         public Guid Id { get; set; }
         public string Name { get; set; } = null!;
         public string? Description { get; set; }
+        public int OrderNumber { get; set; }
 
         public virtual ICollection<Employee> Employees { get; set; }
         public virtual ICollection<NormativeDocument> NormativeDocuments { get; set; }
