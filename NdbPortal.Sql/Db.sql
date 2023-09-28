@@ -28,6 +28,7 @@ CREATE TABLE NDB.dbo.NormativeDocumentConfidentialityLevel (
   Id uniqueidentifier NOT NULL,
   Name varchar(50) NOT NULL,
   Description varchar(500) NULL,
+  [OrderNumber] int NOT NULL DEFAULT 1,
   CONSTRAINT PK_NormativeDocumentConfidentialityLevel_Id PRIMARY KEY CLUSTERED (Id)
 )
 ON [PRIMARY]
@@ -201,9 +202,9 @@ INSERT Company(Id, Name, Address) VALUES ('038add12-04cc-4ddf-a6eb-5fdb405c8e42'
 INSERT Company(Id, Name, Address) VALUES ('fa28eb7e-9a71-447b-9664-679898c5f2da', 'Rebelion army', 'Naboo')
 INSERT Company(Id, Name, Address) VALUES ('23af38bb-24a5-4fe6-a728-1bd259fe91c8', 'Galactic empire', 'Not in a Milky Way')
 
-INSERT INTO NormativeDocumentConfidentialityLevel(Id, Name, Description) VALUES ('1c94e800-30e4-4eb1-85bd-612017ec94a8', 'Top secret', 'No one should know about this!')
-INSERT INTO NormativeDocumentConfidentialityLevel(Id, Name, Description) VALUES ('4ea68745-8df8-4ada-99d7-9b7f604496ed', 'Common usage', NULL)
-INSERT INTO NormativeDocumentConfidentialityLevel(Id, Name, Description) VALUES ('2d51915e-32cf-457e-908c-a80b9cd09258', 'Public', NULL)
+INSERT INTO NormativeDocumentConfidentialityLevel(Id, Name, Description, OrderNumber) VALUES ('1c94e800-30e4-4eb1-85bd-612017ec94a8', 'Top secret', 'No one should know about this!', 1)
+INSERT INTO NormativeDocumentConfidentialityLevel(Id, Name, Description, OrderNumber) VALUES ('4ea68745-8df8-4ada-99d7-9b7f604496ed', 'Common usage', NULL, 2)
+INSERT INTO NormativeDocumentConfidentialityLevel(Id, Name, Description, OrderNumber) VALUES ('2d51915e-32cf-457e-908c-a80b9cd09258', 'Public', NULL, 3)
 
 INSERT INTO Employee (Id, Name, Surname, CompanyId, Email, Password, ConfidentialityLevelId) 
 VALUES (NEWID(), 'Darth', 'Vader', '038add12-04cc-4ddf-a6eb-5fdb405c8e42', 'darth.vader@deathstar.com', 'password123', '1c94e800-30e4-4eb1-85bd-612017ec94a8')

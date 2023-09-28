@@ -149,6 +149,7 @@ namespace NdbPortal.Web.Controllers
             }
 
             await _webApiClient.AddRecordAsync("NormativeDocuments", vm.NormativeDocument, token);
+            Response.Headers.Add("CreatedNormativeDocumentId", vm.NormativeDocument.Id.ToString());
 
             return RedirectToAction("Index", "Home");
         }

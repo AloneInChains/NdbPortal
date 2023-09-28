@@ -72,6 +72,8 @@ namespace NdbPortal.API
 
             CreateMap<NormativeDocumentGetWithDetailsDto, NormativeDocument>();
             CreateMap<NormativeDocument, NormativeDocumentGetWithDetailsDto>();
+            
+            CreateMap<EmployeeGetWithDetailsDto, Employee>();
 
         }
     }

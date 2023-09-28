@@ -6,6 +6,7 @@ using NdbPortal.Contracts;
 using NdbPortal.Entities;
 using NdbPortal.Entities.Dtos.NormativeDocument;
 using NdbPortal.Entities.Models;
+using System.Runtime.InteropServices;
 
 namespace NdbPortal.API.Controllers
 {
@@ -32,6 +33,7 @@ namespace NdbPortal.API.Controllers
         [HttpGet("GetNormativeDocumentsByEmployeeId")]
         public async Task<ActionResult<IEnumerable<NormativeDocumentGetWithDetailsDto>>> GetNormativeDocumentsByEmployeeId (Guid employeeId)
         {
+
             var employee = await _repository.Employee.GetEmployeeAsync(employeeId);
 
             if (employee == null)
@@ -39,12 +41,19 @@ namespace NdbPortal.API.Controllers
                 return NotFound("Employee not found");
             }
 
+            if (!employee.ConfidentialityLevelId.HasValue)
+            {
+                return UnprocessableEntity("Employee without confidentiality level");
+            }
+
+            var employeeConfidentialityLevel = await _repository.NormativeDocumentConfidentialityLevel.GetNormativeDocumentConfidentialityLevelAsync(employee.ConfidentialityLevelId.Value);
+            
             var normativeDocuments = await _context.Set<NormativeDocument>()
                 .Include(n => n.DocumentType)
                 .Include(n => n.ConfidentialityLevel)
                 .Include(n => n.CreatedBy)
                 .Include(n => n.Company)
-                .Where(x => x.ConfidentialityLevelId == employee.ConfidentialityLevelId && x.CompanyId == employee.CompanyId).AsNoTracking().ToListAsync();
+                .Where(x => x.ConfidentialityLevel.OrderNumber <= employeeConfidentialityLevel.OrderNumber && x.CompanyId == employee.CompanyId || x.CreatedById == employeeId).AsNoTracking().ToListAsync();
             var normativeDocumentsResult = _mapper.Map<IEnumerable<NormativeDocumentGetWithDetailsDto>>(normativeDocuments);
 
             return Ok(normativeDocumentsResult);
