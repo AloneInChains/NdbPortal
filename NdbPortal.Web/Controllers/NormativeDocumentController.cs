@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using Aspose.Words;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NdbPortal.Entities.Dtos.NormativeDocument;
 using NdbPortal.Entities.Dtos.NormativeDocumentConfidentialityLevel;
@@ -19,11 +19,13 @@ namespace NdbPortal.Web.Controllers
 
         private readonly IWebApiClient _webApiClient;
         private readonly ILogger<NormativeDocumentController> _logger;
+        private readonly IAsposeLicenseService _asposeLicenseService;
 
-        public NormativeDocumentController(IWebApiClient webApiClient, ILogger<NormativeDocumentController> logger)
+        public NormativeDocumentController(IWebApiClient webApiClient, ILogger<NormativeDocumentController> logger, IAsposeLicenseService asposeLicenseService)
         {
             _webApiClient = webApiClient;
             _logger = logger;
+            _asposeLicenseService = asposeLicenseService;
         }
 
         // GET: NormativeDocumentController
@@ -121,6 +123,32 @@ namespace NdbPortal.Web.Controllers
             };
 
             return View(vm);
+        }
+
+        public async Task<IActionResult> PreviewFile(Guid id)
+        {
+            string? token = HttpContext.Session.GetString("JWToken");
+            
+            if (token == null) return NotFound();
+            
+            var files = await _webApiClient.GetEntityRecordsAsync<IEnumerable<NormativeDocumentFileGetDto>>("NormativeDocumentFiles", token);
+            
+            if (files == null) return NotFound();
+
+            var fileToPreview = files.Where(x => x.Id == id).FirstOrDefault();
+            
+            if (fileToPreview == null) return NotFound();
+            
+            using (MemoryStream fileStream = new MemoryStream(fileToPreview.Data))
+            {
+                _asposeLicenseService.LoadLicense();
+                Document doc = new Document(fileStream);
+                            
+                var pdfStream = new MemoryStream();
+                doc.Save(pdfStream, SaveFormat.Pdf);
+
+                return File(pdfStream.ToArray(), "application/pdf");
+            }
         }
 
         // POST: NormativeDocumentController/Create
