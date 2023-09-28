@@ -26,3 +26,7 @@ body {
 .fa-trash-can:hover {
     color: crimson;
 }
+
+.fa-search:hover {
+    color: #49d100;
+}
