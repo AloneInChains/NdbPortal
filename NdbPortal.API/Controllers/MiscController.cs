@@ -16,17 +16,15 @@ namespace NdbPortal.API.Controllers
     public class MiscController : ControllerBase
     {
 
-        private readonly NDBContext _context;
-        private IRepositoryWrapper _repository;
-        private IMapper _mapper;
-        private readonly ILogger<MiscController> _logger;
+        private readonly NDbContext _context;
+        private readonly IRepositoryWrapper _repository;
+        private readonly IMapper _mapper;
 
-        public MiscController(NDBContext context, IRepositoryWrapper repository, IMapper mapper, ILogger<MiscController> logger)
+        public MiscController(NDbContext context, IRepositoryWrapper repository, IMapper mapper, ILogger<MiscController> logger)
         {
             _context = context;
             _repository = repository;
             _mapper = mapper;
-            _logger = logger;
         }
 
         // GET: api/Misc/GetNormativeDocumentsByEmployee

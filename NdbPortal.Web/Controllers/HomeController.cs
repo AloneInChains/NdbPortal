@@ -25,9 +25,6 @@ namespace NdbPortal.Web.Controllers
             Employee? employee = (Employee?)HttpContext.Items["User"];
             var token = HttpContext.Session.GetString("JWToken");
 
-            //if (employee == null || token == null)
-            //    return RedirectToAction("Error");
-
             ViewBag.EmployeeName = $"{employee.Name} {employee.Surname}";
 
             var normativeDocuments = await _webApiClient.GetNormativeDocumentsByEmployeeIdAsync(token, employee.Id);
@@ -106,8 +103,7 @@ namespace NdbPortal.Web.Controllers
 
             if (normativeDocuments != null)
             {
-                DateTime searchDateTime = default(DateTime);
-                if (DateTime.TryParse(q, out searchDateTime))
+                if (DateTime.TryParse(q, out var searchDateTime))
                 {
                     normativeDocuments = normativeDocuments.Where(x => x.CreatedOn.Date == searchDateTime.Date);
                 }

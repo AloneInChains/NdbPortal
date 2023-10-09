@@ -21,12 +21,12 @@ namespace NdbPortal.API.Controllers
     [Authorize]
     public class NormativeDocumentFilesController : ControllerBase
     {
-        private readonly NDBContext _context;
-        private IRepositoryWrapper _repository;
-        private IMapper _mapper;
+        private readonly NDbContext _context;
+        private readonly IRepositoryWrapper _repository;
+        private readonly IMapper _mapper;
         private readonly ILogger<NormativeDocumentFilesController> _logger;
 
-        public NormativeDocumentFilesController(NDBContext context, IRepositoryWrapper repository, IMapper mapper, ILogger<NormativeDocumentFilesController> logger)
+        public NormativeDocumentFilesController(NDbContext context, IRepositoryWrapper repository, IMapper mapper, ILogger<NormativeDocumentFilesController> logger)
         {
             _context = context;
             _repository = repository;
@@ -143,18 +143,12 @@ namespace NdbPortal.API.Controllers
             }
             catch (DbUpdateException ex)
             {
-                if (await NormativeDocumentFileExists(normativeDocumentFile.Id))
+                if (normativeDocumentFile != null && await NormativeDocumentFileExists(normativeDocumentFile.Id))
                 {
                     _logger.LogError($"Normative document file already exists. {ex.Message}");
                     return Conflict();
                 }
-                else
-                {
-                    throw;
-                }
-            }
-            catch (Exception)
-            {
+
                 throw;
             }
         }

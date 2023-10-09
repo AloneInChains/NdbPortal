@@ -6,6 +6,7 @@ using System.Text;
 using NdbPortal.Entities.Dtos.Login;
 using System.Text.Json;
 using NdbPortal.Entities.Dtos.NormativeDocument;
+using NdbPortal.Web.exceptions;
 
 namespace NdbPortal.Web
 {
@@ -23,7 +24,7 @@ namespace NdbPortal.Web
         {
             if (loginInfo == null || string.IsNullOrEmpty(loginInfo.Email) || string.IsNullOrEmpty(loginInfo.Password))
             {
-                throw new ArgumentNullException("Not full credentials");
+                throw new ArgumentNullException(nameof(loginInfo));
             }
 
             HttpRequestMessage request = new(HttpMethod.Post, "authenticate")
@@ -116,7 +117,7 @@ namespace NdbPortal.Web
 
                 if (employee == null)
                 {
-                    throw new Exception("Token validation failed. Employee is null");
+                    throw new TokenValidationException("Employee is null");
                 }
 
                 return new Guid(employee);
@@ -155,65 +156,45 @@ namespace NdbPortal.Web
 
         public async Task AddRecordAsync<T>(string entityName, T record, string token)
         {
-            try
+            if (string.IsNullOrEmpty(entityName))
             {
-
-                if (string.IsNullOrEmpty(entityName))
-                {
-                    throw new ArgumentNullException(nameof(entityName));
-                }
-
-                if (string.IsNullOrEmpty(token))
-                {
-                    throw new ArgumentNullException(nameof(token));
-                }
-
-                HttpRequestMessage request = new(HttpMethod.Post, entityName)
-                {
-                    Content = new StringContent(JsonSerializer.Serialize(record), Encoding.UTF8, "application/json")
-                };
-                request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token);
-
-                var response = await _httpClient.SendAsync(request);
-                response.EnsureSuccessStatusCode();
-
-            }
-            catch (Exception)
-            {
-                throw;
+                throw new ArgumentNullException(nameof(entityName));
             }
 
+            if (string.IsNullOrEmpty(token))
+            {
+                throw new ArgumentNullException(nameof(token));
+            }
+
+            HttpRequestMessage request = new(HttpMethod.Post, entityName)
+            {
+                Content = new StringContent(JsonSerializer.Serialize(record), Encoding.UTF8, "application/json")
+            };
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token);
+
+            var response = await _httpClient.SendAsync(request);
+            response.EnsureSuccessStatusCode();
         }
 
         public async Task EditRecordAsync<T>(string entityName, Guid id, T record, string token)
         {
-            try
+            if (string.IsNullOrEmpty(entityName))
             {
-
-                if (string.IsNullOrEmpty(entityName))
-                {
-                    throw new ArgumentNullException(nameof(entityName));
-                }
-
-                if (string.IsNullOrEmpty(token))
-                {
-                    throw new ArgumentNullException(nameof(token));
-                }
-
-                HttpRequestMessage request = new(HttpMethod.Put, $"{entityName}/{id}")
-                {
-                    Content = new StringContent(JsonSerializer.Serialize(record), Encoding.UTF8, "application/json")
-                };
-                request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token);
-
-                var response = await _httpClient.SendAsync(request);
-
-            }
-            catch (Exception)
-            {
-                throw;
+                throw new ArgumentNullException(nameof(entityName));
             }
 
+            if (string.IsNullOrEmpty(token))
+            {
+                throw new ArgumentNullException(nameof(token));
+            }
+
+            HttpRequestMessage request = new(HttpMethod.Put, $"{entityName}/{id}")
+            {
+                Content = new StringContent(JsonSerializer.Serialize(record), Encoding.UTF8, "application/json")
+            };
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token);
+
+            await _httpClient.SendAsync(request);
         }
 
         public async Task DeleteRecordAsync(string entityPath, Guid id, string token)
@@ -245,34 +226,25 @@ namespace NdbPortal.Web
 
         public async Task<T?> GetPrimitiveValueAsync<T>(string path, string token)
         {
-            try
+            if (string.IsNullOrEmpty(path))
             {
-
-                if (string.IsNullOrEmpty(path))
-                {
-                    throw new ArgumentNullException(nameof(path));
-                }
-
-                if (string.IsNullOrEmpty(token))
-                {
-                    throw new ArgumentNullException(nameof(token));
-                }
-
-                HttpRequestMessage request = new(HttpMethod.Get, path);
-                request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token);
-
-                var response = await _httpClient.SendAsync(request);
-                response.EnsureSuccessStatusCode();
-
-                var responseString = await response.Content.ReadAsStringAsync();
-
-                return JsonSerializer.Deserialize<T>(responseString);
-
+                throw new ArgumentNullException(nameof(path));
             }
-            catch (Exception)
+
+            if (string.IsNullOrEmpty(token))
             {
-                throw;
+                throw new ArgumentNullException(nameof(token));
             }
+
+            HttpRequestMessage request = new(HttpMethod.Get, path);
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token);
+
+            var response = await _httpClient.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            return JsonSerializer.Deserialize<T>(responseString);
         }
 
     }

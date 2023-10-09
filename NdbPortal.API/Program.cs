@@ -54,7 +54,7 @@ try
             }
         });
     });
-    builder.Services.AddDbContext<NDBContext>(options =>
+    builder.Services.AddDbContext<NDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("db"))
     );
     builder.Services.AddAutoMapper(typeof(Program));

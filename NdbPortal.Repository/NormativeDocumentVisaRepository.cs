@@ -5,7 +5,7 @@ namespace NdbPortal.Repository
 {
     public class NormativeDocumentVisaRepository : RepositoryBase<NormativeDocumentVisa>, INormativeDocumentVisaRepository
     {
-        public NormativeDocumentVisaRepository(NDBContext repositoryContext) : base(repositoryContext)
+        public NormativeDocumentVisaRepository(NDbContext repositoryContext) : base(repositoryContext)
         {
         }
 

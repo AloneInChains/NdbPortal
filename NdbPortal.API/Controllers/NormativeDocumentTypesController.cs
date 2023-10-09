@@ -20,12 +20,12 @@ namespace NdbPortal.API.Controllers
     [Authorize]
     public class NormativeDocumentTypesController : ControllerBase
     {
-        private readonly NDBContext _context;
-        private IRepositoryWrapper _repository;
-        private IMapper _mapper;
+        private readonly NDbContext _context;
+        private readonly IRepositoryWrapper _repository;
+        private readonly IMapper _mapper;
         private readonly ILogger<NormativeDocumentTypesController> _logger;
 
-        public NormativeDocumentTypesController(NDBContext context, IRepositoryWrapper repository, IMapper mapper, ILogger<NormativeDocumentTypesController> logger)
+        public NormativeDocumentTypesController(NDbContext context, IRepositoryWrapper repository, IMapper mapper, ILogger<NormativeDocumentTypesController> logger)
         {
             _context = context;
             _repository = repository;
@@ -117,18 +117,13 @@ namespace NdbPortal.API.Controllers
             }
             catch (DbUpdateException)
             {
-                if (await NormativeDocumentTypeExistsAsync(normativeDocumentType.Id))
+                if (normativeDocumentType != null
+                    && await NormativeDocumentTypeExistsAsync(normativeDocumentType.Id))
                 {
                     _logger.LogError("Normative document type already exists");
                     return Conflict();
                 }
-                else
-                {
-                    throw;
-                }
-            }
-            catch (Exception)
-            {
+
                 throw;
             }
         }

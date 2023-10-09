@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NdbPortal.Web.Contracts;
 using NdbPortal.Entities.Dtos.Login;
+using NdbPortal.Web.exceptions;
 
 namespace NdbPortal.Web.Controllers
 {
@@ -42,7 +43,7 @@ namespace NdbPortal.Web.Controllers
                 }
                 else
                 {
-                    throw new Exception();
+                    throw new AuthenticationException();
                 }
             }
             catch(Exception)

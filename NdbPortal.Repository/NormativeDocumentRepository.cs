@@ -5,7 +5,7 @@ namespace NdbPortal.Repository
 {
     public class NormativeDocumentRepository : RepositoryBase<NormativeDocument>, INormativeDocumentRepository
     {
-        public NormativeDocumentRepository(NDBContext repositoryContext) : base(repositoryContext)
+        public NormativeDocumentRepository(NDbContext repositoryContext) : base(repositoryContext)
         {
         }
 

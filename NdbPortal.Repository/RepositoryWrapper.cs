@@ -11,7 +11,7 @@ namespace NdbPortal.Repository
     public class RepositoryWrapper : IRepositoryWrapper
     {
 
-        private NDBContext _ndbContext;
+        private readonly NDbContext _nDbContext;
         private ICompanyRepository _company = default!;
         private IEmployeeRepository _employee = default!;
         private INormativeDocumentConfidentialityLevelRepository _normativeDocumentConfidentialityLevel = default!;
@@ -22,9 +22,9 @@ namespace NdbPortal.Repository
         private INormativeDocumentRepository _normativeDocument = default!;
         private INormativeDocumentTypeRepository _normativeDocumentType = default!;
 
-        public RepositoryWrapper(NDBContext ndbContext)
+        public RepositoryWrapper(NDbContext nDbContext)
         {
-            _ndbContext = ndbContext;
+            _nDbContext = nDbContext;
         }
 
         public ICompanyRepository Company
@@ -33,7 +33,7 @@ namespace NdbPortal.Repository
             { 
                 if (_company == null)
                 {
-                    _company = new CompanyRepository(_ndbContext);
+                    _company = new CompanyRepository(_nDbContext);
                 }
 
                 return _company;
@@ -45,7 +45,7 @@ namespace NdbPortal.Repository
             {
                 if (_employee == null)
                 {
-                    _employee = new EmployeeRepository(_ndbContext);
+                    _employee = new EmployeeRepository(_nDbContext);
                 }
 
                 return _employee;
@@ -58,7 +58,7 @@ namespace NdbPortal.Repository
             {
                 if (_normativeDocumentConfidentialityLevel == null)
                 {
-                    _normativeDocumentConfidentialityLevel = new NormativeDocumentConfidentialityLevelRepository(_ndbContext);
+                    _normativeDocumentConfidentialityLevel = new NormativeDocumentConfidentialityLevelRepository(_nDbContext);
                 }
 
                 return _normativeDocumentConfidentialityLevel;
@@ -71,7 +71,7 @@ namespace NdbPortal.Repository
             {
                 if (_normativeDocumentFile == null)
                 {
-                    _normativeDocumentFile = new NormativeDocumentFileRepository(_ndbContext);
+                    _normativeDocumentFile = new NormativeDocumentFileRepository(_nDbContext);
                 }
 
                 return _normativeDocumentFile;
@@ -84,7 +84,7 @@ namespace NdbPortal.Repository
             {
                 if (_normativeDocumentRelation == null)
                 {
-                    _normativeDocumentRelation = new NormativeDocumentRelationRepository(_ndbContext);
+                    _normativeDocumentRelation = new NormativeDocumentRelationRepository(_nDbContext);
                 }
 
                 return _normativeDocumentRelation;
@@ -97,7 +97,7 @@ namespace NdbPortal.Repository
             {
                 if (_normativeDocumentRelationType == null)
                 {
-                    _normativeDocumentRelationType = new NormativeDocumentRelationTypeRepository(_ndbContext);
+                    _normativeDocumentRelationType = new NormativeDocumentRelationTypeRepository(_nDbContext);
                 }
 
                 return _normativeDocumentRelationType;
@@ -110,7 +110,7 @@ namespace NdbPortal.Repository
             {
                 if (_normativeDocumentVisa == null)
                 {
-                    _normativeDocumentVisa = new NormativeDocumentVisaRepository(_ndbContext);
+                    _normativeDocumentVisa = new NormativeDocumentVisaRepository(_nDbContext);
                 }
 
                 return _normativeDocumentVisa;
@@ -124,7 +124,7 @@ namespace NdbPortal.Repository
             {
                 if (_normativeDocument == null)
                 {
-                    _normativeDocument = new NormativeDocumentRepository(_ndbContext);
+                    _normativeDocument = new NormativeDocumentRepository(_nDbContext);
                 }
 
                 return _normativeDocument;
@@ -137,7 +137,7 @@ namespace NdbPortal.Repository
             {
                 if (_normativeDocumentType == null)
                 {
-                    _normativeDocumentType = new NormativeDocumentTypeRepository(_ndbContext);
+                    _normativeDocumentType = new NormativeDocumentTypeRepository(_nDbContext);
                 }
 
                 return _normativeDocumentType;
@@ -146,7 +146,7 @@ namespace NdbPortal.Repository
 
         public async Task SaveAsync()
         {
-            await _ndbContext.SaveChangesAsync();
+            await _nDbContext.SaveChangesAsync();
         }
     }
 }

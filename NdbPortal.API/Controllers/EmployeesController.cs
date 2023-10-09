@@ -19,12 +19,12 @@ namespace NdbPortal.API.Controllers
     [Authorize]
     public class EmployeesController : ControllerBase
     {
-        private readonly NDBContext _context;
-        private IRepositoryWrapper _repository;
-        private IMapper _mapper;
+        private readonly NDbContext _context;
+        private readonly IRepositoryWrapper _repository;
+        private readonly IMapper _mapper;
         private readonly ILogger<EmployeesController> _logger;
 
-        public EmployeesController(NDBContext context, IRepositoryWrapper repository, IMapper mapper, ILogger<EmployeesController> logger)
+        public EmployeesController(NDbContext context, IRepositoryWrapper repository, IMapper mapper, ILogger<EmployeesController> logger)
         {
             _context = context;
             _repository = repository;
@@ -70,30 +70,6 @@ namespace NdbPortal.API.Controllers
             return Ok(employeeResult);
         }
 
-        /*[HttpGet("NormativeDocument/{id}")]
-        public async Task<ActionResult<EmployeeGetDto>> GetEmployeesByNormativeDocument(Guid id)
-        {
-            if (!await NormativeDocumentExistsAsync(id))
-            {
-                return NotFound();
-            }
-
-            var employee = await _context.Set<Employee>()
-                .Join(_context.NormativeDocuments, 
-                    employee => employee.CompanyId, 
-                    normativeDocument => normativeDocument.CompanyId, 
-                    (relation, documentA) =>
-                    new
-                    {
-                        relation,
-                        documentA
-                    })
-
-            var employee = await _repository.Employee.GetEmployeeAsync(id);
-            var employeeResult = _mapper.Map<EmployeeGetDto>(employee);
-
-            return Ok(employeeResult);
-        }*/
 
         // PUT: api/Employees/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -157,13 +133,7 @@ namespace NdbPortal.API.Controllers
                     _logger.LogError("Employee already exists");
                     return Conflict();
                 }
-                else
-                {
-                    throw;
-                }
-            }
-            catch (Exception)
-            {
+
                 throw;
             }
         }

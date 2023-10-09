@@ -6,8 +6,9 @@ namespace NdbPortal.Repository
 {
     public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
-        protected NDBContext RepositoryContext { get; set; }
-        public RepositoryBase(NDBContext repositoryContext)
+        protected NDbContext RepositoryContext { get; set; }
+
+        protected RepositoryBase(NDbContext repositoryContext)
         {
             RepositoryContext = repositoryContext;
         }

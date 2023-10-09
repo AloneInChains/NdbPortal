@@ -5,7 +5,7 @@ namespace NdbPortal.Repository
 {
     public class CompanyRepository : RepositoryBase<Company>, ICompanyRepository
     {
-        public CompanyRepository(NDBContext repositoryContext) : base(repositoryContext)
+        public CompanyRepository(NDbContext repositoryContext) : base(repositoryContext)
         {
         }
 

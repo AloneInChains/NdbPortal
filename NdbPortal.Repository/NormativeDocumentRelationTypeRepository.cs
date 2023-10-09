@@ -10,7 +10,7 @@ namespace NdbPortal.Repository
 {
     internal class NormativeDocumentRelationTypeRepository : RepositoryBase<NormativeDocumentRelationType>, INormativeDocumentRelationTypeRepository
     {
-        public NormativeDocumentRelationTypeRepository(NDBContext repositoryContext) : base(repositoryContext)
+        public NormativeDocumentRelationTypeRepository(NDbContext repositoryContext) : base(repositoryContext)
         {
         }
 
