@@ -20,12 +20,12 @@ namespace NdbPortal.API.Controllers
     [Authorize]
     public class NormativeDocumentConfidentialityLevelsController : ControllerBase
     {
-        private readonly NDBContext _context;
-        private IRepositoryWrapper _repository;
-        private IMapper _mapper;
+        private readonly NDbContext _context;
+        private readonly IRepositoryWrapper _repository;
+        private readonly IMapper _mapper;
         private readonly ILogger<NormativeDocumentConfidentialityLevelsController> _logger;
 
-        public NormativeDocumentConfidentialityLevelsController(NDBContext context, IRepositoryWrapper repository, 
+        public NormativeDocumentConfidentialityLevelsController(NDbContext context, IRepositoryWrapper repository, 
             IMapper mapper, ILogger<NormativeDocumentConfidentialityLevelsController> logger)
         {
             _context = context;
@@ -119,18 +119,13 @@ namespace NdbPortal.API.Controllers
             }
             catch (DbUpdateException ex)
             {
-                if (await NormativeDocumentConfidentialityLevelExists(normativeDocumentConfidentialityLevel.Id))
+                if (normativeDocumentConfidentialityLevel != null 
+                    && await NormativeDocumentConfidentialityLevelExists(normativeDocumentConfidentialityLevel.Id))
                 {
                     _logger.LogError($"Normative document confidentiality level already exists. {ex.Message}");
                     return Conflict();
                 }
-                else
-                {
-                    throw;
-                }
-            }
-            catch (Exception)
-            {
+
                 throw;
             }
         }

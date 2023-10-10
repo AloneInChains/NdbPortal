@@ -20,12 +20,12 @@ namespace NdbPortal.API.Controllers
     [Authorize]
     public class CompaniesController : ControllerBase
     {
-        private readonly NDBContext _context;
-        private IRepositoryWrapper _repository;
-        private IMapper _mapper;
+        private readonly NDbContext _context;
+        private readonly IRepositoryWrapper _repository;
+        private readonly IMapper _mapper;
         private readonly ILogger<CompaniesController> _logger;
 
-        public CompaniesController(NDBContext context, IRepositoryWrapper repository, IMapper mapper, ILogger<CompaniesController> logger)
+        public CompaniesController(NDbContext context, IRepositoryWrapper repository, IMapper mapper, ILogger<CompaniesController> logger)
         {
             _context = context;
             _repository = repository;
@@ -120,7 +120,7 @@ namespace NdbPortal.API.Controllers
             }
             catch (DbUpdateException ex)
             {
-                if (await CompanyExistsAsync(company.Id))
+                if (company != null && await CompanyExistsAsync(company.Id))
                 {
                     _logger.LogError("Error in PostCompany, company already exists");
                     return Conflict();

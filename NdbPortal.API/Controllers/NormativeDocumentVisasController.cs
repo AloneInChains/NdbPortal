@@ -22,12 +22,12 @@ namespace NdbPortal.API.Controllers
     [Authorize]
     public class NormativeDocumentVisasController : ControllerBase
     {
-        private readonly NDBContext _context;
-        private IRepositoryWrapper _repository;
-        private IMapper _mapper;
+        private readonly NDbContext _context;
+        private readonly IRepositoryWrapper _repository;
+        private readonly IMapper _mapper;
         private readonly ILogger<NormativeDocumentVisasController> _logger;
 
-        public NormativeDocumentVisasController(NDBContext context, IRepositoryWrapper repository, IMapper mapper, ILogger<NormativeDocumentVisasController> logger)
+        public NormativeDocumentVisasController(NDbContext context, IRepositoryWrapper repository, IMapper mapper, ILogger<NormativeDocumentVisasController> logger)
         {
             _context = context;
             _repository = repository;
@@ -145,18 +145,12 @@ namespace NdbPortal.API.Controllers
             }
             catch (DbUpdateException ex)
             {
-                if (await NormativeDocumentVisaExistsAsync(normativeDocumentVisa.Id))
+                if (normativeDocumentVisa != null && await NormativeDocumentVisaExistsAsync(normativeDocumentVisa.Id))
                 {
                     _logger.LogError($"Normative document visa already exists. {ex.Message}");
                     return Conflict();
                 }
-                else
-                {
-                    throw;
-                }
-            }
-            catch (Exception)
-            {
+
                 throw;
             }
         }

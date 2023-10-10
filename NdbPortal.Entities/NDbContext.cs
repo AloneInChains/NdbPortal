@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace NdbPortal.Entities
 {
-    public partial class NDBContext : DbContext
+    public partial class NDbContext : DbContext
     {
-        public NDBContext()
+        public NDbContext()
         {
         }
 
-        public NDBContext(DbContextOptions<NDBContext> options)
+        public NDbContext(DbContextOptions<NDbContext> options)
             : base(options)
         {
         }
@@ -254,10 +254,6 @@ namespace NdbPortal.Entities
                     .HasMaxLength(50)
                     .IsUnicode(false);
             });
-
-            OnModelCreatingPartial(modelBuilder);
         }
-
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

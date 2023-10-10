@@ -31,9 +31,6 @@ namespace NdbPortal.Web.Controllers
         // GET: NormativeDocumentController
         public async Task<IActionResult> Edit(Guid id)
         {
-
-            NormativeDocumentGetWithDetailsDto? normativeDocument = new NormativeDocumentGetWithDetailsDto();
-
             Employee? employee = (Employee?)HttpContext.Items["User"];
             var token = HttpContext.Session.GetString("JWToken");
 
@@ -51,7 +48,7 @@ namespace NdbPortal.Web.Controllers
                 return NotFound();
             }
 
-            normativeDocument = normativeDocumentList.FirstOrDefault(x => x.Id == id);
+            var normativeDocument = normativeDocumentList.FirstOrDefault(x => x.Id == id);
 
             if (normativeDocument == null)
             {
@@ -124,33 +121,7 @@ namespace NdbPortal.Web.Controllers
 
             return View(vm);
         }
-
-        public async Task<IActionResult> PreviewFile(Guid id)
-        {
-            string? token = HttpContext.Session.GetString("JWToken");
-            
-            if (token == null) return NotFound();
-            
-            var files = await _webApiClient.GetEntityRecordsAsync<IEnumerable<NormativeDocumentFileGetDto>>("NormativeDocumentFiles", token);
-            
-            if (files == null) return NotFound();
-
-            var fileToPreview = files.Where(x => x.Id == id).FirstOrDefault();
-            
-            if (fileToPreview == null) return NotFound();
-            
-            using (MemoryStream fileStream = new MemoryStream(fileToPreview.Data))
-            {
-                _asposeLicenseService.LoadLicense();
-                Document doc = new Document(fileStream);
-                            
-                var pdfStream = new MemoryStream();
-                doc.Save(pdfStream, SaveFormat.Pdf);
-
-                return File(pdfStream.ToArray(), "application/pdf");
-            }
-        }
-
+        
         // POST: NormativeDocumentController/Create
         [HttpPost]
         public async Task<IActionResult> Create(NormativeDocumentViewModel vm)
@@ -172,14 +143,38 @@ namespace NdbPortal.Web.Controllers
             {
                 vm.NormativeDocument.CreatedById = employee.Id;
                 vm.NormativeDocument.CompanyId = employee.CompanyId;
-                vm.NormativeDocument.VersionNumber = vm.NormativeDocument.VersionNumber;
-                vm.NormativeDocument.MainDocumentId = vm.NormativeDocument.MainDocumentId;
             }
 
             await _webApiClient.AddRecordAsync("NormativeDocuments", vm.NormativeDocument, token);
             Response.Headers.Add("CreatedNormativeDocumentId", vm.NormativeDocument.Id.ToString());
 
             return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> PreviewFile(Guid id)
+        {
+            string? token = HttpContext.Session.GetString("JWToken");
+            
+            if (token == null) return NotFound();
+            
+            var files = await _webApiClient.GetEntityRecordsAsync<IEnumerable<NormativeDocumentFileGetDto>>("NormativeDocumentFiles", token);
+            
+            if (files == null) return NotFound();
+
+            var fileToPreview = files.FirstOrDefault(x => x.Id == id);
+            
+            if (fileToPreview == null) return NotFound();
+            
+            using (MemoryStream fileStream = new MemoryStream(fileToPreview.Data))
+            {
+                _asposeLicenseService.LoadLicense();
+                Document doc = new Document(fileStream);
+                            
+                var pdfStream = new MemoryStream();
+                doc.Save(pdfStream, SaveFormat.Pdf);
+
+                return File(pdfStream.ToArray(), "application/pdf");
+            }
         }
 
         // POST: NormativeDocumentController/Update
@@ -426,7 +421,6 @@ namespace NdbPortal.Web.Controllers
 
             if (!string.IsNullOrEmpty(token) && employee != null)
             {
-                //var items = await _webApiClient.GetNormativeDocumentsByEmployeeIdAsync <IEnumerable<NormativeDocumentGetDto>>("NormativeDocuments", token);
                 var items = await _webApiClient.GetNormativeDocumentsByEmployeeIdAsync(token, employee.Id);
 
                 if (items != null)

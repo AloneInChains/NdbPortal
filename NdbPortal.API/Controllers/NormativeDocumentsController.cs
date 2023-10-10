@@ -20,11 +20,11 @@ namespace NdbPortal.API.Controllers
     [Authorize]
     public class NormativeDocumentsController : ControllerBase
     {
-        private readonly NDBContext _context;
-        private IRepositoryWrapper _repository;
-        private IMapper _mapper;
+        private readonly NDbContext _context;
+        private readonly IRepositoryWrapper _repository;
+        private readonly IMapper _mapper;
         private readonly ILogger<NormativeDocumentsController> _logger;
-        public NormativeDocumentsController(NDBContext context, IRepositoryWrapper repository, IMapper mapper, ILogger<NormativeDocumentsController> logger)
+        public NormativeDocumentsController(NDbContext context, IRepositoryWrapper repository, IMapper mapper, ILogger<NormativeDocumentsController> logger)
         {
             _context = context;
             _repository = repository;
@@ -157,18 +157,13 @@ namespace NdbPortal.API.Controllers
             }
             catch (DbUpdateException)
             {
-                if (await NormativeDocumentExistsAsync(normativeDocument.Id))
+                if (normativeDocument != null
+                    && await NormativeDocumentExistsAsync(normativeDocument.Id))
                 {
                     _logger.LogError("Normative document already exists");
                     return Conflict();
                 }
-                else
-                {
-                    throw;
-                }
-            }
-            catch (Exception)
-            {
+
                 throw;
             }
         }

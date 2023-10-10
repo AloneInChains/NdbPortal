@@ -5,7 +5,7 @@ namespace NdbPortal.Repository
 {
     public class NormativeDocumentConfidentialityLevelRepository : RepositoryBase<NormativeDocumentConfidentialityLevel>, INormativeDocumentConfidentialityLevelRepository
     {
-        public NormativeDocumentConfidentialityLevelRepository(NDBContext repositoryContext) : base(repositoryContext)
+        public NormativeDocumentConfidentialityLevelRepository(NDbContext repositoryContext) : base(repositoryContext)
         {
         }
 

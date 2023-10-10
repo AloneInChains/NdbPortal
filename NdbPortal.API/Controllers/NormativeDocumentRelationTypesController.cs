@@ -20,12 +20,12 @@ namespace NdbPortal.API.Controllers
     [Authorize]
     public class NormativeDocumentRelationTypesController : ControllerBase
     {
-        private readonly NDBContext _context;
-        private IRepositoryWrapper _repository;
-        private IMapper _mapper;
+        private readonly NDbContext _context;
+        private readonly IRepositoryWrapper _repository;
+        private readonly IMapper _mapper;
         private readonly ILogger<NormativeDocumentRelationsController> _logger;
 
-        public NormativeDocumentRelationTypesController(NDBContext context, IRepositoryWrapper repository, IMapper mapper, ILogger<NormativeDocumentRelationsController> logger)
+        public NormativeDocumentRelationTypesController(NDbContext context, IRepositoryWrapper repository, IMapper mapper, ILogger<NormativeDocumentRelationsController> logger)
         {
             _context = context;
             _repository = repository;
@@ -117,7 +117,8 @@ namespace NdbPortal.API.Controllers
             }
             catch (DbUpdateException ex)
             {
-                if (!await NormativeDocumentRelationTypeExistsAsync(normativeDocumentRelationType.Id))
+                if (normativeDocumentRelationType != null
+                    && !await NormativeDocumentRelationTypeExistsAsync(normativeDocumentRelationType.Id))
                 {
                     _logger.LogError("Error in PostNormativeDocumentRelationType, normative document relation type already exists");
                     return Conflict();

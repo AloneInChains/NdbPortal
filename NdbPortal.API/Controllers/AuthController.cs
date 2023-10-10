@@ -16,19 +16,14 @@ namespace NdbPortal.API.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-
-        private readonly NDBContext _context;
-        private IRepositoryWrapper _repository;
-        private IMapper _mapper;
-        private readonly ILogger<AuthController> _logger;
+        private readonly IRepositoryWrapper _repository;
+        private readonly IMapper _mapper;
         private readonly IOptionsMonitor<JwtOptions> _jwtOptionsMonitor;
 
-        public AuthController(NDBContext context, IRepositoryWrapper repository, IMapper mapper, ILogger<AuthController> logger, IOptionsMonitor<JwtOptions> jwtOptionsMonitor)
+        public AuthController(NDbContext context, IRepositoryWrapper repository, IMapper mapper, ILogger<AuthController> logger, IOptionsMonitor<JwtOptions> jwtOptionsMonitor)
         {
-            _context = context;
             _repository = repository;
             _mapper = mapper;
-            _logger = logger;
             _jwtOptionsMonitor = jwtOptionsMonitor;
         }
 
