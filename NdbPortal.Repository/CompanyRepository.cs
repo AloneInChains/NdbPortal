@@ -25,7 +25,7 @@ namespace NdbPortal.Repository
             RepositoryContext.Update(company);
         }
 
-        public async Task <Company> GetCompanyAsync(Guid id)
+        public async Task<Company?> GetCompanyAsync(Guid id)
         {
             return await GetWithWhere(company => company.Id.Equals(id)).FirstOrDefaultAsync();
         }

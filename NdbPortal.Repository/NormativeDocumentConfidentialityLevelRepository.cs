@@ -24,7 +24,7 @@ namespace NdbPortal.Repository
             return await GetAll().OrderBy(x => x.Name).ToListAsync();
         }
 
-        public async Task<NormativeDocumentConfidentialityLevel> GetNormativeDocumentConfidentialityLevelAsync(Guid id)
+        public async Task<NormativeDocumentConfidentialityLevel?> GetNormativeDocumentConfidentialityLevelAsync(Guid id)
         {
             return await GetWithWhere(x => x.Id == id).FirstOrDefaultAsync();
         }

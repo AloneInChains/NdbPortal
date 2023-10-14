@@ -1,10 +1,4 @@
-﻿using NdbPortal.Contracts;
-using NdbPortal.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NdbPortal.Entities;
 
 namespace NdbPortal.Repository
 {
