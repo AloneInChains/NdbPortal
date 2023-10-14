@@ -174,7 +174,7 @@ namespace NdbPortal.API.Controllers
             var normativeDocument = await _repository.NormativeDocument.GetNormativeDocumentAsync(id);
             try
             {
-                _repository.NormativeDocument.DeleteNormativeDocument(normativeDocument);
+                _repository.NormativeDocument.DeleteNormativeDocument(normativeDocument!);
                 await _repository.SaveAsync();
             }
             catch (DbUpdateException ex)

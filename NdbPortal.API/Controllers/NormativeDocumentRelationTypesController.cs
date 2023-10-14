@@ -140,7 +140,7 @@ namespace NdbPortal.API.Controllers
 
             var company = await _repository.Company.GetCompanyAsync(id);
 
-            _repository.Company.DeleteCompany(company);
+            _repository.Company.DeleteCompany(company!);
             await _repository.SaveAsync();
 
             return NoContent();

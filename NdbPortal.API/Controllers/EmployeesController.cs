@@ -121,7 +121,7 @@ namespace NdbPortal.API.Controllers
             }
             catch (DbUpdateException)
             {
-                if (await EmployeeExistsAsync(employee.Id))
+                if (await EmployeeExistsAsync(employee!.Id))
                 {
                     _logger.LogError("Employee already exists");
                     return Conflict();

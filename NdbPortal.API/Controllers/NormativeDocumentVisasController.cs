@@ -163,7 +163,7 @@ namespace NdbPortal.API.Controllers
 
                 var normativeDocumentVisa = await _repository.NormativeDocumentVisa.GetNormativeDocumentVisaAsync(id);
 
-                _repository.NormativeDocumentVisa.DeleteNormativeDocumentVisa(normativeDocumentVisa);
+                _repository.NormativeDocumentVisa.DeleteNormativeDocumentVisa(normativeDocumentVisa!);
                 await _repository.SaveAsync();
 
                 return NoContent();

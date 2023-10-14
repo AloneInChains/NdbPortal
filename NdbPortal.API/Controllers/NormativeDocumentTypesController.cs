@@ -133,7 +133,7 @@ namespace NdbPortal.API.Controllers
 
             var normativeDocumentType = await _repository.NormativeDocumentType.GetNormativeDocumentTypeAsync(id);
 
-            _repository.NormativeDocumentType.DeleteNormativeDocumentType(normativeDocumentType);
+            _repository.NormativeDocumentType.DeleteNormativeDocumentType(normativeDocumentType!);
             await _repository.SaveAsync();
 
             return NoContent();
