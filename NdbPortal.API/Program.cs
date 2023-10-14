@@ -1,3 +1,5 @@
+using System.Configuration;
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,8 +12,7 @@ using NdbPortal.Entities;
 using NdbPortal.Repository;
 using NLog;
 using NLog.Web;
-using System.Configuration;
-using System.Text;
+using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 
@@ -21,7 +22,7 @@ try
     var builder = WebApplication.CreateBuilder(args);
 
     builder.Logging.ClearProviders();
-    builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+    builder.Logging.SetMinimumLevel(LogLevel.Trace);
     builder.Host.UseNLog();
 
     // Add services to the container.

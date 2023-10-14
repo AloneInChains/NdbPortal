@@ -1,11 +1,6 @@
 ﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NdbPortal.Contracts;
@@ -61,16 +56,16 @@ namespace NdbPortal.API.Controllers
         // PUT: api/NormativeDocumentRelationTypes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutNormativeDocumentRelationType(Guid id, NormativeDocumentRelationTypeUpdateDto normativeDocumentRelationType)
+        public async Task<IActionResult> PutNormativeDocumentRelationType(Guid id, NormativeDocumentRelationTypeUpdateDto documentRelationType)
         {
-            if (id != normativeDocumentRelationType.Id)
+            if (id != documentRelationType.Id)
             {
                 return BadRequest();
             }
 
             try
             {
-                var normativeDocumentRelationTypeResult = _mapper.Map<NormativeDocumentRelationType>(normativeDocumentRelationType);
+                var normativeDocumentRelationTypeResult = _mapper.Map<NormativeDocumentRelationType>(documentRelationType);
 
                 _repository.NormativeDocumentRelationType.UpdateNormativeDocumentRelationType(normativeDocumentRelationTypeResult);
                 await _context.SaveChangesAsync();
@@ -81,10 +76,8 @@ namespace NdbPortal.API.Controllers
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
 
             return NoContent();
@@ -93,11 +86,11 @@ namespace NdbPortal.API.Controllers
         // POST: api/NormativeDocumentRelationTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<NormativeDocumentRelationType>> PostNormativeDocumentRelationType([FromBody] NormativeDocumentRelationTypeAddDto normativeDocumentRelationType)
+        public async Task<ActionResult<NormativeDocumentRelationType>> PostNormativeDocumentRelationType([FromBody] NormativeDocumentRelationTypeAddDto documentRelationType)
         {
             try
             {
-                if (normativeDocumentRelationType is null)
+                if (documentRelationType is null)
                 {
                     _logger.LogError("Normative document relation type object sent from client is null.");
                     return BadRequest("Normative document relation type object is null");
@@ -108,7 +101,7 @@ namespace NdbPortal.API.Controllers
                     return BadRequest("Invalid model object");
                 }
 
-                var normativeDocumentRelationTypeEntity = _mapper.Map<NormativeDocumentRelationType>(normativeDocumentRelationType);
+                var normativeDocumentRelationTypeEntity = _mapper.Map<NormativeDocumentRelationType>(documentRelationType);
                 _repository.NormativeDocumentRelationType.CreateNormativeDocumentRelationType(normativeDocumentRelationTypeEntity);
                 await _repository.SaveAsync();
 
@@ -117,17 +110,15 @@ namespace NdbPortal.API.Controllers
             }
             catch (DbUpdateException ex)
             {
-                if (normativeDocumentRelationType != null
-                    && !await NormativeDocumentRelationTypeExistsAsync(normativeDocumentRelationType.Id))
+                if (documentRelationType != null
+                    && !await NormativeDocumentRelationTypeExistsAsync(documentRelationType.Id))
                 {
                     _logger.LogError("Error in PostNormativeDocumentRelationType, normative document relation type already exists");
                     return Conflict();
                 }
-                else
-                {
-                    _logger.LogError("Error in PostNormativeDocumentRelationType", ex.Message);
-                    throw;
-                }
+
+                _logger.LogError("Error in PostNormativeDocumentRelationType", ex.Message);
+                throw;
             }
             catch (Exception ex)
             {

@@ -9,14 +9,14 @@ namespace NdbPortal.Repository
         {
         }
 
-        public void CreateNormativeDocumentRelation(NormativeDocumentRelation normativeDocumentRelation)
+        public void CreateNormativeDocumentRelation(NormativeDocumentRelation documentRelation)
         {
-            RepositoryContext.Add(normativeDocumentRelation);
+            RepositoryContext.Add(documentRelation);
         }
 
-        public void DeleteNormativeDocumentRelation(NormativeDocumentRelation normativeDocumentRelation)
+        public void DeleteNormativeDocumentRelation(NormativeDocumentRelation documentRelation)
         {
-            RepositoryContext.Remove(normativeDocumentRelation);
+            RepositoryContext.Remove(documentRelation);
         }
 
         public async Task<IEnumerable<NormativeDocumentRelation>> GetAllNormativeDocumentRelationsAsync()
@@ -29,9 +29,9 @@ namespace NdbPortal.Repository
             return await GetWithWhere(x => x.Id == id).FirstOrDefaultAsync();
         }
 
-        public void UpdateNormativeDocumentRelation(NormativeDocumentRelation normativeDocumentRelation)
+        public void UpdateNormativeDocumentRelation(NormativeDocumentRelation documentRelation)
         {
-            RepositoryContext.Update(normativeDocumentRelation);
+            RepositoryContext.Update(documentRelation);
         }
     }
 }

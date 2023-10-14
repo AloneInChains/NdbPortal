@@ -1,7 +1,7 @@
-﻿using NdbPortal.Contracts;
-using NdbPortal.Entities;
+﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
+using NdbPortal.Entities;
+
 namespace NdbPortal.Repository
 {
     public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class

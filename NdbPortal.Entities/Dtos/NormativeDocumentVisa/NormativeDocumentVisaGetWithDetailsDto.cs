@@ -1,7 +1,7 @@
-﻿using NdbPortal.Entities.Dtos.Employee;
-using NdbPortal.Entities.Dtos.NormativeDocument;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using NdbPortal.Entities.Dtos.Employee;
+using NdbPortal.Entities.Dtos.NormativeDocument;
 
 namespace NdbPortal.Entities.Dtos.NormativeDocumentVisa
 {

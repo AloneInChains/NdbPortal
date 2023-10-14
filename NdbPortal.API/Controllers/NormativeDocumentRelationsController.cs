@@ -1,11 +1,6 @@
 ﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NdbPortal.Contracts;
@@ -76,8 +71,8 @@ namespace NdbPortal.API.Controllers
                 .Join(_context.NormativeDocuments, r => r.relation.DocumentB, db => db.Id, (relationCombined, documentB) =>
                 new
                 {
-                    RelationId = relationCombined.relation.RelationId,
-                    RelationName = relationCombined.relation.RelationName,
+                    relationCombined.relation.RelationId,
+                    relationCombined.relation.RelationName,
                     RelationDocument = relationCombined.documentA,
                     RelatedDocument = documentB
                 })
@@ -99,16 +94,16 @@ namespace NdbPortal.API.Controllers
         // PUT: api/NormativeDocumentRelations/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutNormativeDocumentRelation(Guid id, NormativeDocumentRelationUpdateDto normativeDocumentRelation)
+        public async Task<IActionResult> PutNormativeDocumentRelation(Guid id, NormativeDocumentRelationUpdateDto documentRelation)
         {
-            if (id != normativeDocumentRelation.Id)
+            if (id != documentRelation.Id)
             {
                 return BadRequest();
             }
 
             try
             {
-                var normativeDocumentRelationEntity = _mapper.Map<NormativeDocumentRelation>(normativeDocumentRelation);
+                var normativeDocumentRelationEntity = _mapper.Map<NormativeDocumentRelation>(documentRelation);
                 _repository.NormativeDocumentRelation.UpdateNormativeDocumentRelation(normativeDocumentRelationEntity);
                 await _context.SaveChangesAsync();
             }
@@ -118,10 +113,8 @@ namespace NdbPortal.API.Controllers
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
 
             return NoContent();
@@ -130,11 +123,11 @@ namespace NdbPortal.API.Controllers
         // POST: api/NormativeDocumentRelations
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<NormativeDocumentRelation>> PostNormativeDocumentRelation(NormativeDocumentRelationAddDto normativeDocumentRelation)
+        public async Task<ActionResult<NormativeDocumentRelation>> PostNormativeDocumentRelation(NormativeDocumentRelationAddDto documentRelation)
         {
             try
             {
-                if (normativeDocumentRelation is null)
+                if (documentRelation is null)
                 {
                     _logger.LogError("normativeDocumentFile object sent from client is null.");
                     return BadRequest("normativeDocumentFile object is null");
@@ -145,19 +138,19 @@ namespace NdbPortal.API.Controllers
                     return BadRequest("Invalid model object");
                 }
 
-                var normativeDocumentRelationEntity = _mapper.Map<NormativeDocumentRelation>(normativeDocumentRelation);
+                var normativeDocumentRelationEntity = _mapper.Map<NormativeDocumentRelation>(documentRelation);
                 _repository.NormativeDocumentRelation.CreateNormativeDocumentRelation(normativeDocumentRelationEntity);
                 await _repository.SaveAsync();
 
                 var createdNormativeDocumentRelationEntity =
-                    _mapper.Map<NormativeDocumentRelationAddDto>(normativeDocumentRelation);
+                    _mapper.Map<NormativeDocumentRelationAddDto>(documentRelation);
                 return CreatedAtAction("GetNormativeDocumentRelation",
-                    new { id = normativeDocumentRelation.Id }, createdNormativeDocumentRelationEntity);
+                    new { id = documentRelation.Id }, createdNormativeDocumentRelationEntity);
             }
             catch (DbUpdateException ex)
             {
-                if (normativeDocumentRelation != null
-                    && await NormativeDocumentRelationExistsAsync(normativeDocumentRelation.Id))
+                if (documentRelation != null
+                    && await NormativeDocumentRelationExistsAsync(documentRelation.Id))
                 {
                     _logger.LogError($"Normative document file already exists. {ex.Message}");
                     return Conflict();

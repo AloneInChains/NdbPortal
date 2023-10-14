@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace NdbPortal.Entities.Models
+﻿namespace NdbPortal.Entities.Models
 {
-    public partial class Employee
+    public sealed class Employee
     {
         public Employee()
         {
@@ -20,10 +17,10 @@ namespace NdbPortal.Entities.Models
         public string Password { get; set; } = null!;
         public Guid? ConfidentialityLevelId { get; set; }
 
-        public virtual Company Company { get; set; } = null!;
-        public virtual NormativeDocumentConfidentialityLevel? ConfidentialityLevel { get; set; }
-        public virtual ICollection<NormativeDocumentFile> NormativeDocumentFiles { get; set; }
-        public virtual ICollection<NormativeDocumentVisa> NormativeDocumentVisas { get; set; }
-        public virtual ICollection<NormativeDocument> NormativeDocuments { get; set; }
+        public Company Company { get; set; } = null!;
+        public NormativeDocumentConfidentialityLevel? ConfidentialityLevel { get; set; }
+        public ICollection<NormativeDocumentFile> NormativeDocumentFiles { get; set; }
+        public ICollection<NormativeDocumentVisa> NormativeDocumentVisas { get; set; }
+        public ICollection<NormativeDocument> NormativeDocuments { get; set; }
     }
 }

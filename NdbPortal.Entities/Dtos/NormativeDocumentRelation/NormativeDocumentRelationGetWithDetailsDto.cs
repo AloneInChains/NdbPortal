@@ -1,7 +1,5 @@
-﻿using NdbPortal.Entities.Dtos.NormativeDocument;
-using NdbPortal.Entities.Dtos.NormativeDocumentRelationType;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
+using NdbPortal.Entities.Dtos.NormativeDocument;
 
 namespace NdbPortal.Entities.Dtos.NormativeDocumentRelation
 {

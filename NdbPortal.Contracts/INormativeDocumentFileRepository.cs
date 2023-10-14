@@ -6,8 +6,8 @@ namespace NdbPortal.Contracts
     {
         Task<IEnumerable<NormativeDocumentFile>> GetAllNormativeDocumentFilesAsync();
         Task<NormativeDocumentFile?> GetNormativeDocumentFileAsync(Guid id);
-        void CreateNormativeDocumentFile(NormativeDocumentFile normativeDocumentFile);
-        void UpdateNormativeDocumentFile(NormativeDocumentFile normativeDocumentFile);
-        void DeleteNormativeDocumentFile(NormativeDocumentFile normativeDocumentFile);
+        void CreateNormativeDocumentFile(NormativeDocumentFile documentFile);
+        void UpdateNormativeDocumentFile(NormativeDocumentFile documentFile);
+        void DeleteNormativeDocumentFile(NormativeDocumentFile documentFile);
     }
 }

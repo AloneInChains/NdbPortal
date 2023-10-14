@@ -6,7 +6,6 @@ using NdbPortal.Contracts;
 using NdbPortal.Entities;
 using NdbPortal.Entities.Dtos.NormativeDocument;
 using NdbPortal.Entities.Models;
-using System.Runtime.InteropServices;
 
 namespace NdbPortal.API.Controllers
 {

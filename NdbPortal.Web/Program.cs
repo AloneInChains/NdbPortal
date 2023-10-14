@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Mvc;
 using NdbPortal.Web;
 using NdbPortal.Web.Authorization;
@@ -14,7 +15,7 @@ builder.Services.AddControllersWithViews(options =>
 builder.Services.AddHttpClient<IWebApiClient, WebApiClient>(options =>
 {
     options.BaseAddress = new Uri(builder.Configuration["ApiUri"]);
-    options.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+    options.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 });
 
 builder.Services.AddSingleton<IAsposeLicenseService>(provider => new AsposeLicenseService(builder.Configuration));

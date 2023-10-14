@@ -1,11 +1,6 @@
 ﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NdbPortal.Contracts;
@@ -88,16 +83,16 @@ namespace NdbPortal.API.Controllers
         // PUT: api/NormativeDocumentVisas/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutNormativeDocumentVisa(Guid id, NormativeDocumentVisaUpdateDto normativeDocumentVisa)
+        public async Task<IActionResult> PutNormativeDocumentVisa(Guid id, NormativeDocumentVisaUpdateDto documentVisa)
         {
-            if (id != normativeDocumentVisa.Id)
+            if (id != documentVisa.Id)
             {
                 return BadRequest();
             }
 
             try
             {
-                var normativeDocumentVisaEntity = _mapper.Map<NormativeDocumentVisa>(normativeDocumentVisa);
+                var normativeDocumentVisaEntity = _mapper.Map<NormativeDocumentVisa>(documentVisa);
                 _repository.NormativeDocumentVisa.UpdateNormativeDocumentVisa(normativeDocumentVisaEntity);
                 await _context.SaveChangesAsync();
             }
@@ -107,10 +102,8 @@ namespace NdbPortal.API.Controllers
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
 
             return NoContent();
@@ -119,11 +112,11 @@ namespace NdbPortal.API.Controllers
         // POST: api/NormativeDocumentVisas
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<NormativeDocumentVisa>> PostNormativeDocumentVisa(NormativeDocumentVisaAddDto normativeDocumentVisa)
+        public async Task<ActionResult<NormativeDocumentVisa>> PostNormativeDocumentVisa(NormativeDocumentVisaAddDto documentVisa)
         {
             try
             {
-                if (normativeDocumentVisa is null)
+                if (documentVisa is null)
                 {
                     _logger.LogError("normativeDocumentVisa object sent from client is null.");
                     return BadRequest("normativeDocumentVisa object is null");
@@ -134,18 +127,18 @@ namespace NdbPortal.API.Controllers
                     return BadRequest("Invalid model object");
                 }
 
-                var normativeDocumentVisaEntity = _mapper.Map<NormativeDocumentVisa>(normativeDocumentVisa);
+                var normativeDocumentVisaEntity = _mapper.Map<NormativeDocumentVisa>(documentVisa);
                 _repository.NormativeDocumentVisa.CreateNormativeDocumentVisa(normativeDocumentVisaEntity);
                 await _repository.SaveAsync();
 
                 var createdNormativeDocumentVisaEntity =
-                    _mapper.Map<NormativeDocumentVisaAddDto>(normativeDocumentVisa);
+                    _mapper.Map<NormativeDocumentVisaAddDto>(documentVisa);
                 return CreatedAtAction("GetNormativeDocumentVisa",
-                    new { id = normativeDocumentVisa.Id }, createdNormativeDocumentVisaEntity);
+                    new { id = documentVisa.Id }, createdNormativeDocumentVisaEntity);
             }
             catch (DbUpdateException ex)
             {
-                if (normativeDocumentVisa != null && await NormativeDocumentVisaExistsAsync(normativeDocumentVisa.Id))
+                if (documentVisa != null && await NormativeDocumentVisaExistsAsync(documentVisa.Id))
                 {
                     _logger.LogError($"Normative document visa already exists. {ex.Message}");
                     return Conflict();

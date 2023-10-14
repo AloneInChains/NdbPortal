@@ -1,11 +1,6 @@
 ﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NdbPortal.Contracts;
@@ -63,16 +58,16 @@ namespace NdbPortal.API.Controllers
         // PUT: api/NormativeDocumentConfidentialityLevels/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutNormativeDocumentConfidentialityLevel(Guid id, NormativeDocumentConfidentialityLevel normativeDocumentConfidentialityLevel)
+        public async Task<IActionResult> PutNormativeDocumentConfidentialityLevel(Guid id, NormativeDocumentConfidentialityLevel documentConfidentialityLevel)
         {
-            if (id != normativeDocumentConfidentialityLevel.Id)
+            if (id != documentConfidentialityLevel.Id)
             {
                 return BadRequest();
             }
 
             try
             {
-                _repository.NormativeDocumentConfidentialityLevel.UpdateNormativeDocumentConfidentialityLevel(normativeDocumentConfidentialityLevel);
+                _repository.NormativeDocumentConfidentialityLevel.UpdateNormativeDocumentConfidentialityLevel(documentConfidentialityLevel);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -81,10 +76,8 @@ namespace NdbPortal.API.Controllers
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
 
             return NoContent();
@@ -93,11 +86,11 @@ namespace NdbPortal.API.Controllers
         // POST: api/NormativeDocumentConfidentialityLevels
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<NormativeDocumentConfidentialityLevel>> PostNormativeDocumentConfidentialityLevel(NormativeDocumentConfidentialityLevel normativeDocumentConfidentialityLevel)
+        public async Task<ActionResult<NormativeDocumentConfidentialityLevel>> PostNormativeDocumentConfidentialityLevel(NormativeDocumentConfidentialityLevel documentConfidentialityLevel)
         {
             try
             {
-                if (normativeDocumentConfidentialityLevel is null)
+                if (documentConfidentialityLevel is null)
                 {
                     _logger.LogError("NormativeDocumentConfidentialityLevel object sent from client is null.");
                     return BadRequest("NormativeDocumentConfidentialityLevel object is null");
@@ -108,7 +101,7 @@ namespace NdbPortal.API.Controllers
                     return BadRequest("Invalid model object");
                 }
 
-                var normativeDocumentConfidentialityLevelEntity = _mapper.Map<NormativeDocumentConfidentialityLevel>(normativeDocumentConfidentialityLevel);
+                var normativeDocumentConfidentialityLevelEntity = _mapper.Map<NormativeDocumentConfidentialityLevel>(documentConfidentialityLevel);
                 _repository.NormativeDocumentConfidentialityLevel.CreateNormativeDocumentConfidentialityLevel(normativeDocumentConfidentialityLevelEntity);
                 await _repository.SaveAsync();
 
@@ -119,8 +112,8 @@ namespace NdbPortal.API.Controllers
             }
             catch (DbUpdateException ex)
             {
-                if (normativeDocumentConfidentialityLevel != null 
-                    && await NormativeDocumentConfidentialityLevelExists(normativeDocumentConfidentialityLevel.Id))
+                if (documentConfidentialityLevel != null 
+                    && await NormativeDocumentConfidentialityLevelExists(documentConfidentialityLevel.Id))
                 {
                     _logger.LogError($"Normative document confidentiality level already exists. {ex.Message}");
                     return Conflict();

@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using NdbPortal.Web.Contracts;
-using NdbPortal.Web.Models;
-using NdbPortal.Entities.Models;
+﻿using System.Net;
+using System.Net.Http.Headers;
+using System.Runtime.Serialization;
 using System.Text;
-using NdbPortal.Entities.Dtos.Login;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using NdbPortal.Entities.Dtos.Login;
 using NdbPortal.Entities.Dtos.NormativeDocument;
+using NdbPortal.Entities.Models;
+using NdbPortal.Web.Contracts;
 using NdbPortal.Web.exceptions;
+using NdbPortal.Web.Models;
 
 namespace NdbPortal.Web
 {
@@ -42,15 +45,11 @@ namespace NdbPortal.Web
                 {
                     return authResult.Token;
                 }
-                else
-                {
-                    return string.Empty;
-                }
-            }
-            else
-            {
+
                 return string.Empty;
             }
+
+            return string.Empty;
         }
 
         public async Task<Employee?> GetEmployeeByIdAsync(string token, Guid id)
@@ -58,7 +57,7 @@ namespace NdbPortal.Web
             try
             {
                 HttpRequestMessage request = new(HttpMethod.Get, $"Employees/{id}");
-                request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token);
+                request.Headers.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token);
 
                 var response = await _httpClient.SendAsync(request);
                 response.EnsureSuccessStatusCode();
@@ -72,7 +71,7 @@ namespace NdbPortal.Web
             }
         }
 
-        public async Task<IEnumerable<NormativeDocumentGetWithDetailsDto>?> GetNormativeDocumentsByEmployeeIdAsync(string token, Guid employeeId)
+        public async Task<IEnumerable<NormativeDocumentGetWithDetailsDto>?> GetNormativeDocumentsByEmployeeIdAsync(string? token, Guid employeeId)
         {
             try
             {
@@ -82,14 +81,14 @@ namespace NdbPortal.Web
                 }
 
                 HttpRequestMessage request = new(HttpMethod.Get, $"Misc/GetNormativeDocumentsByEmployeeId?employeeId={employeeId}");
-                request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token);
+                request.Headers.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token);
 
                 var response = await _httpClient.SendAsync(request);
                 response.EnsureSuccessStatusCode();
 
                 return JsonSerializer.Deserialize<IEnumerable<NormativeDocumentGetWithDetailsDto>>(await response.Content.ReadAsStringAsync());
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new List<NormativeDocumentGetWithDetailsDto>();
             }
@@ -140,7 +139,7 @@ namespace NdbPortal.Web
                 }
 
                 HttpRequestMessage request = new(HttpMethod.Get, entityPath);
-                request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token);
+                request.Headers.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token);
 
                 var response = await _httpClient.SendAsync(request);
                 response.EnsureSuccessStatusCode();
@@ -170,13 +169,13 @@ namespace NdbPortal.Web
             {
                 Content = new StringContent(JsonSerializer.Serialize(record), Encoding.UTF8, "application/json")
             };
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token);
+            request.Headers.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token);
 
             var response = await _httpClient.SendAsync(request);
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task EditRecordAsync<T>(string entityName, Guid id, T record, string token)
+        public async Task EditRecordAsync<T>(string entityName, Guid id, T record, string? token)
         {
             if (string.IsNullOrEmpty(entityName))
             {
@@ -192,7 +191,7 @@ namespace NdbPortal.Web
             {
                 Content = new StringContent(JsonSerializer.Serialize(record), Encoding.UTF8, "application/json")
             };
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token);
+            request.Headers.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token);
 
             await _httpClient.SendAsync(request);
         }
@@ -211,11 +210,11 @@ namespace NdbPortal.Web
             }
 
             HttpRequestMessage request = new(HttpMethod.Delete, $"{entityPath}/{id}");
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token);
+            request.Headers.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token);
 
             var response = await _httpClient.SendAsync(request);
                 
-            if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
+            if (response.StatusCode == HttpStatusCode.Conflict)
             {
                 throw new ConfictDbDeletionException();
             }
@@ -237,7 +236,7 @@ namespace NdbPortal.Web
             }
 
             HttpRequestMessage request = new(HttpMethod.Get, path);
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token);
+            request.Headers.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token);
 
             var response = await _httpClient.SendAsync(request);
             response.EnsureSuccessStatusCode();
@@ -257,8 +256,8 @@ namespace NdbPortal.Web
         public ConfictDbDeletionException(string message) : base(message) { }
         public ConfictDbDeletionException(string message, Exception inner) : base(message, inner) { }
         protected ConfictDbDeletionException(
-          System.Runtime.Serialization.SerializationInfo info,
-          System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+          SerializationInfo info,
+          StreamingContext context) : base(info, context) { }
     }
 
 }

@@ -1,11 +1,6 @@
 ﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NdbPortal.Contracts;
@@ -62,16 +57,16 @@ namespace NdbPortal.API.Controllers
         // PUT: api/NormativeDocumentTypes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutNormativeDocumentType(Guid id, NormativeDocumentTypeUpdateDto normativeDocumentType)
+        public async Task<IActionResult> PutNormativeDocumentType(Guid id, NormativeDocumentTypeUpdateDto documentType)
         {
-            if (id != normativeDocumentType.Id)
+            if (id != documentType.Id)
             {
                 return BadRequest();
             }
 
             try
             {
-                var normativeDocumentTypeDto = _mapper.Map<NormativeDocumentType>(normativeDocumentType);
+                var normativeDocumentTypeDto = _mapper.Map<NormativeDocumentType>(documentType);
                 _repository.NormativeDocumentType.UpdateNormativeDocumentType(normativeDocumentTypeDto);
                 await _context.SaveChangesAsync();
             }
@@ -81,10 +76,8 @@ namespace NdbPortal.API.Controllers
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
 
             return NoContent();
@@ -93,11 +86,11 @@ namespace NdbPortal.API.Controllers
         // POST: api/NormativeDocumentTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<NormativeDocumentType>> PostNormativeDocumentType(NormativeDocumentTypeAddDto normativeDocumentType)
+        public async Task<ActionResult<NormativeDocumentType>> PostNormativeDocumentType(NormativeDocumentTypeAddDto documentType)
         {
             try
             {
-                if (normativeDocumentType is null)
+                if (documentType is null)
                 {
                     _logger.LogError("Normative document type object sent from client is null.");
                     return BadRequest("Normative document type is null");
@@ -108,7 +101,7 @@ namespace NdbPortal.API.Controllers
                     return BadRequest("Invalid model object");
                 }
 
-                var normativeDocumentTypeEntity = _mapper.Map<NormativeDocumentType>(normativeDocumentType);
+                var normativeDocumentTypeEntity = _mapper.Map<NormativeDocumentType>(documentType);
                 _repository.NormativeDocumentType.CreateNormativeDocumentType(normativeDocumentTypeEntity);
                 await _repository.SaveAsync();
 
@@ -117,8 +110,8 @@ namespace NdbPortal.API.Controllers
             }
             catch (DbUpdateException)
             {
-                if (normativeDocumentType != null
-                    && await NormativeDocumentTypeExistsAsync(normativeDocumentType.Id))
+                if (documentType != null
+                    && await NormativeDocumentTypeExistsAsync(documentType.Id))
                 {
                     _logger.LogError("Normative document type already exists");
                     return Conflict();

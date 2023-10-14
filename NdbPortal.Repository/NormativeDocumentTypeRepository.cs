@@ -9,14 +9,14 @@ namespace NdbPortal.Repository
         {
         }
 
-        public void CreateNormativeDocumentType(NormativeDocumentType normativeDocumentType)
+        public void CreateNormativeDocumentType(NormativeDocumentType documentType)
         {
-            RepositoryContext.Add(normativeDocumentType);
+            RepositoryContext.Add(documentType);
         }
 
-        public void DeleteNormativeDocumentType(NormativeDocumentType normativeDocumentType)
+        public void DeleteNormativeDocumentType(NormativeDocumentType documentType)
         {
-            RepositoryContext.Remove(normativeDocumentType);
+            RepositoryContext.Remove(documentType);
         }
 
         public async Task<IEnumerable<NormativeDocumentType>> GetAllNormativeDocumentTypesAsync()
@@ -29,9 +29,9 @@ namespace NdbPortal.Repository
             return await GetWithWhere(x => x.Id == id).FirstOrDefaultAsync();
         }
 
-        public void UpdateNormativeDocumentType(NormativeDocumentType normativeDocumentType)
+        public void UpdateNormativeDocumentType(NormativeDocumentType documentType)
         {
-            RepositoryContext.Update(normativeDocumentType);
+            RepositoryContext.Update(documentType);
         }
     }
 }

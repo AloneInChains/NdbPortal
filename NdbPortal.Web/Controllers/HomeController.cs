@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 using NdbPortal.Entities.Models;
 using NdbPortal.Web.Authorization;
 using NdbPortal.Web.Contracts;
 using NdbPortal.Web.Models;
-using System.Diagnostics;
 
 namespace NdbPortal.Web.Controllers
 {
@@ -25,9 +25,9 @@ namespace NdbPortal.Web.Controllers
             Employee? employee = (Employee?)HttpContext.Items["User"];
             var token = HttpContext.Session.GetString("JWToken");
 
-            ViewBag.EmployeeName = $"{employee.Name} {employee.Surname}";
+            ViewBag.EmployeeName = $"{employee?.Name} {employee?.Surname}";
 
-            var normativeDocuments = await _webApiClient.GetNormativeDocumentsByEmployeeIdAsync(token, employee.Id);
+            var normativeDocuments = await _webApiClient.GetNormativeDocumentsByEmployeeIdAsync(token, employee!.Id);
 
             return View(normativeDocuments);
         }
@@ -38,7 +38,7 @@ namespace NdbPortal.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(Guid normativeDocumentId)
+        public async Task<IActionResult> Delete(Guid documentId)
         {
 
             try
@@ -49,16 +49,16 @@ namespace NdbPortal.Web.Controllers
                     return RedirectToAction("Index", "Login");
                 }
 
-                await _webApiClient.DeleteRecordAsync("NormativeDocuments", normativeDocumentId, token);
+                await _webApiClient.DeleteRecordAsync("NormativeDocuments", documentId, token);
             }
             catch (ConfictDbDeletionException ex)
             {
-                _logger.LogError(ex, $"Error occured deleting document (id = {normativeDocumentId}");
+                _logger.LogError(ex, $"Error occured deleting document (id = {documentId}");
                 TempData["DeletionError"] = "Error occured while deleting document!\nPlease delete related records first.";
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error occured deleting document (id = {normativeDocumentId}");
+                _logger.LogError(ex, $"Error occured deleting document (id = {documentId}");
                 TempData["DeletionError"] = "Unknown error deleting document";
             }
             return RedirectToAction("Index");

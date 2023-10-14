@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+﻿using System.Net;
+using Microsoft.AspNetCore.Diagnostics;
 using NdbPortal.API.Models;
 using NLog;
-using System.Net;
 
 namespace NdbPortal.API.Extensions
 {

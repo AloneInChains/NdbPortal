@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace NdbPortal.Entities.Models
+﻿namespace NdbPortal.Entities.Models
 {
-    public partial class Company
+    public sealed class Company
     {
         public Company()
         {
@@ -15,7 +12,7 @@ namespace NdbPortal.Entities.Models
         public string Name { get; set; } = null!;
         public string Address { get; set; } = null!;
 
-        public virtual ICollection<Employee> Employees { get; set; }
-        public virtual ICollection<NormativeDocument> NormativeDocuments { get; set; }
+        public ICollection<Employee> Employees { get; set; }
+        public ICollection<NormativeDocument> NormativeDocuments { get; set; }
     }
 }

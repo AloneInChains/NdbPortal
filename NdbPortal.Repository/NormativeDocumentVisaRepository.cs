@@ -9,14 +9,14 @@ namespace NdbPortal.Repository
         {
         }
 
-        public void CreateNormativeDocumentVisa(NormativeDocumentVisa normativeDocumentVisa)
+        public void CreateNormativeDocumentVisa(NormativeDocumentVisa documentVisa)
         {
-            RepositoryContext.Add(normativeDocumentVisa);
+            RepositoryContext.Add(documentVisa);
         }
 
-        public void DeleteNormativeDocumentVisa(NormativeDocumentVisa normativeDocumentVisa)
+        public void DeleteNormativeDocumentVisa(NormativeDocumentVisa documentVisa)
         {
-            RepositoryContext.Remove(normativeDocumentVisa);
+            RepositoryContext.Remove(documentVisa);
         }
 
         public async Task<IEnumerable<NormativeDocumentVisa>> GetAllNormativeDocumentVisasAsync()
@@ -24,14 +24,14 @@ namespace NdbPortal.Repository
             return await GetAll().OrderBy(x => x.CreatedOn).ToListAsync();
         }
 
-        public async Task<NormativeDocumentVisa> GetNormativeDocumentVisaAsync(Guid id)
+        public async Task<NormativeDocumentVisa?> GetNormativeDocumentVisaAsync(Guid id)
         {
             return await GetWithWhere(x => x.Id == id).FirstOrDefaultAsync();
         }
 
-        public void UpdateNormativeDocumentVisa(NormativeDocumentVisa normativeDocumentVisa)
+        public void UpdateNormativeDocumentVisa(NormativeDocumentVisa documentVisa)
         {
-            RepositoryContext.Update(normativeDocumentVisa);
+            RepositoryContext.Update(documentVisa);
         }
     }
 }

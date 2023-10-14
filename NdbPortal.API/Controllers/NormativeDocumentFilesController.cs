@@ -1,11 +1,6 @@
 ﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NdbPortal.Contracts;
@@ -86,16 +81,16 @@ namespace NdbPortal.API.Controllers
         // PUT: api/NormativeDocumentFiles/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutNormativeDocumentFile(Guid id, NormativeDocumentFileUpdateDto normativeDocumentFile)
+        public async Task<IActionResult> PutNormativeDocumentFile(Guid id, NormativeDocumentFileUpdateDto documentFile)
         {
-            if (id != normativeDocumentFile.Id)
+            if (id != documentFile.Id)
             {
                 return BadRequest();
             }
 
             try
             {
-                var normativeDocumentFileEntity = _mapper.Map<NormativeDocumentFile>(normativeDocumentFile);
+                var normativeDocumentFileEntity = _mapper.Map<NormativeDocumentFile>(documentFile);
                 _repository.NormativeDocumentFile.UpdateNormativeDocumentFile(normativeDocumentFileEntity);
                 await _context.SaveChangesAsync();
             }
@@ -105,10 +100,8 @@ namespace NdbPortal.API.Controllers
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
 
             return NoContent();
@@ -117,11 +110,11 @@ namespace NdbPortal.API.Controllers
         // POST: api/NormativeDocumentFiles
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<NormativeDocumentFile>> PostNormativeDocumentFile(NormativeDocumentFileAddDto normativeDocumentFile)
+        public async Task<ActionResult<NormativeDocumentFile>> PostNormativeDocumentFile(NormativeDocumentFileAddDto documentFile)
         {
             try
             {
-                if (normativeDocumentFile is null)
+                if (documentFile is null)
                 {
                     _logger.LogError("NormativeDocumentFile object sent from client is null.");
                     return BadRequest("NormativeDocumentFile object is null");
@@ -132,7 +125,7 @@ namespace NdbPortal.API.Controllers
                     return BadRequest("Invalid model object");
                 }
 
-                var normativeDocumentFileEntity = _mapper.Map<NormativeDocumentFile>(normativeDocumentFile);
+                var normativeDocumentFileEntity = _mapper.Map<NormativeDocumentFile>(documentFile);
                 _repository.NormativeDocumentFile.CreateNormativeDocumentFile(normativeDocumentFileEntity);
                 await _repository.SaveAsync();
 
@@ -143,7 +136,7 @@ namespace NdbPortal.API.Controllers
             }
             catch (DbUpdateException ex)
             {
-                if (normativeDocumentFile != null && await NormativeDocumentFileExists(normativeDocumentFile.Id))
+                if (documentFile != null && await NormativeDocumentFileExists(documentFile.Id))
                 {
                     _logger.LogError($"Normative document file already exists. {ex.Message}");
                     return Conflict();

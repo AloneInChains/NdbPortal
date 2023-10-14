@@ -1,12 +1,9 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
 using NdbPortal.Entities.Models;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace NdbPortal.Entities
 {
-    public partial class NDbContext : DbContext
+    public class NDbContext : DbContext
     {
         public NDbContext()
         {

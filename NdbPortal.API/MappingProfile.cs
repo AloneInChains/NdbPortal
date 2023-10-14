@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
 using NdbPortal.Entities.Dtos.Company;
 using NdbPortal.Entities.Dtos.Employee;
-using NdbPortal.Entities.Dtos.NormativeDocumentFile;
 using NdbPortal.Entities.Dtos.NormativeDocument;
-
-using NdbPortal.Entities.Models;
 using NdbPortal.Entities.Dtos.NormativeDocumentConfidentialityLevel;
+using NdbPortal.Entities.Dtos.NormativeDocumentFile;
 using NdbPortal.Entities.Dtos.NormativeDocumentRelation;
 using NdbPortal.Entities.Dtos.NormativeDocumentRelationType;
 using NdbPortal.Entities.Dtos.NormativeDocumentType;
 using NdbPortal.Entities.Dtos.NormativeDocumentVisa;
+using NdbPortal.Entities.Models;
 
 namespace NdbPortal.API
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NdbPortal.Web.Contracts;
 using NdbPortal.Entities.Dtos.Login;
+using NdbPortal.Web.Contracts;
 using NdbPortal.Web.exceptions;
 
 namespace NdbPortal.Web.Controllers
@@ -35,16 +35,12 @@ namespace NdbPortal.Web.Controllers
                         HttpContext.Session.SetString("JWToken", token);
                         return RedirectToAction("Index", "Home");
                     }
-                    else
-                    {
-                        TempData["AuthMessage"] = "Invalid credentials";
-                        return Redirect("~/Login/Index");
-                    }
+
+                    TempData["AuthMessage"] = "Invalid credentials";
+                    return Redirect("~/Login/Index");
                 }
-                else
-                {
-                    throw new AuthenticationException();
-                }
+
+                throw new AuthenticationException();
             }
             catch(Exception)
             {

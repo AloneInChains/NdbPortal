@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace NdbPortal.Entities.Models
+﻿namespace NdbPortal.Entities.Models
 {
-    public partial class NormativeDocumentType
+    public sealed class NormativeDocumentType
     {
         public NormativeDocumentType()
         {
@@ -14,6 +11,6 @@ namespace NdbPortal.Entities.Models
         public string Name { get; set; } = null!;
         public string? Description { get; set; }
 
-        public virtual ICollection<NormativeDocument> NormativeDocuments { get; set; }
+        public ICollection<NormativeDocument> NormativeDocuments { get; set; }
     }
 }

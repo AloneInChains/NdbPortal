@@ -1,5 +1,4 @@
-﻿@using System.Web
-@model IEnumerable<NdbPortal.Entities.Dtos.NormativeDocument.NormativeDocumentGetWithDetailsDto>
+﻿@model IEnumerable<NdbPortal.Entities.Dtos.NormativeDocument.NormativeDocumentGetWithDetailsDto>
 
 @{
     ViewData["Title"] = "Normative documents";
@@ -18,7 +17,7 @@
                 <div class="modal-body">
                     <p>Are you sure to delete this document?</p>
                     <div class="form-group">
-                        @Html.Hidden("normativeDocumentId", "", new {@id = "normativeDocumentIdToDelete"})
+                        @Html.Hidden("normativeDocumentId", "", new {id = "normativeDocumentIdToDelete"})
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -49,7 +48,7 @@
 <div class="container">
     <div class="row">
         <div class="text-center">
-            @if(@ViewBag.BackToList != null)
+            @if(ViewBag.BackToList != null)
             {
                 <h1>Search results for @Context.Request.Query["q"].ToString()</h1>
             }
@@ -68,7 +67,7 @@
         <div class="col-md-6">
             <div class="float-end">  
                 <form class="d-flex" asp-action="Search">   
-                    @if(@ViewBag.BackToList != null)
+                    @if(ViewBag.BackToList != null)
                     {
                         @Html.ActionLink((string)ViewBag.BackToList, "Index");
                     }
@@ -100,7 +99,7 @@
                             <td>
                                 <div class="d-flex align-items-center">
                                     <div class="ms-3">
-                                        @Html.ActionLink(@normativeDocument.DocumentNumber, "Edit", "NormativeDocument", new { id=@normativeDocument?.Id }, new {@class="fw-bold mb-1"})
+                                        @Html.ActionLink(normativeDocument.DocumentNumber, "Edit", "NormativeDocument", new { id=normativeDocument?.Id }, new {@class="fw-bold mb-1"})
                                     </div>
                                 </div>
                             </td>
@@ -118,7 +117,7 @@
                                 <p class="fw-normal mb-1">@normativeDocument?.VersionNumber</p>
                             </td>
                             <td>
-                                <i class="fa-solid fa-trash-can" data-bs-toggle="modal" data-bs-target="#documentDeleteModal" onclick="deleteNormativeDocument('@normativeDocument.Id')"></i>                                                            
+                                <i class="fa-solid fa-trash-can" data-bs-toggle="modal" data-bs-target="#documentDeleteModal" onclick="deleteNormativeDocument('@normativeDocument!.Id')"></i>                                                            
                             </td>
                         </tr>
                     }

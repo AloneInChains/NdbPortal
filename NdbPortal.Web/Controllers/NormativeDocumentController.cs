@@ -195,7 +195,7 @@ namespace NdbPortal.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteFile(Guid recordId, Guid normativeDocumentId)
+        public async Task<IActionResult> DeleteFile(Guid recordId, Guid documentId)
         {
             string? token = HttpContext.Session.GetString("JWToken");
 
@@ -218,12 +218,12 @@ namespace NdbPortal.Web.Controllers
                 _logger.LogError(ex, "Error deleting visa");
                 TempData["DeletionError"] = ex.Message;
             }
-            return RedirectToAction("Edit", new { @Id = normativeDocumentId });
+            return RedirectToAction("Edit", new { Id = documentId });
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> DeleteVisa(Guid recordId, Guid normativeDocumentId)
+        public async Task<IActionResult> DeleteVisa(Guid recordId, Guid documentId)
         {
             string? token = HttpContext.Session.GetString("JWToken");
 
@@ -247,11 +247,11 @@ namespace NdbPortal.Web.Controllers
                 TempData["DeletionError"] = ex.Message;
             }
 
-            return RedirectToAction("Edit", new { @Id = normativeDocumentId });
+            return RedirectToAction("Edit", new { Id = documentId });
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteRelatedDocument(Guid recordId, Guid normativeDocumentId)
+        public async Task<IActionResult> DeleteRelatedDocument(Guid recordId, Guid documentId)
         {
             string? token = HttpContext.Session.GetString("JWToken");
 
@@ -275,7 +275,7 @@ namespace NdbPortal.Web.Controllers
                 TempData["DeletionError"] = ex.Message;
             }
 
-            return RedirectToAction("Edit", new { @Id = normativeDocumentId });
+            return RedirectToAction("Edit", new { Id = documentId });
         }
 
         [HttpPost]
@@ -307,7 +307,7 @@ namespace NdbPortal.Web.Controllers
                 vm.NormativeDocument = normativeDocuments.FirstOrDefault(x => x.Id == relationDocumentId);
             }
 
-            return RedirectToAction("Edit", new { @Id = relationDocumentId });
+            return RedirectToAction("Edit", new { Id = relationDocumentId });
         }
 
         [HttpPost]
@@ -334,7 +334,7 @@ namespace NdbPortal.Web.Controllers
 
             await _webApiClient.AddRecordAsync("NormativeDocumentVisas", visa, token);
 
-            return RedirectToAction("Edit", new { @Id = visaNormativeDocumentId });
+            return RedirectToAction("Edit", new { Id = visaNormativeDocumentId });
         }
 
         [HttpPost]
@@ -374,11 +374,11 @@ namespace NdbPortal.Web.Controllers
                     }
                 }
 
-                return RedirectToAction("Edit", new { @Id = fileNormativeDocumentId });
+                return RedirectToAction("Edit", new { Id = fileNormativeDocumentId });
             }
             catch
             {
-                return RedirectToAction("Edit", new { @Id = fileNormativeDocumentId });
+                return RedirectToAction("Edit", new { Id = fileNormativeDocumentId });
             }
         }
 
@@ -392,10 +392,8 @@ namespace NdbPortal.Web.Controllers
                 return new SelectList(items, nameof(NormativeDocumentTypeGetDto.Id), nameof(NormativeDocumentTypeGetDto.Name));
 
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         private async Task<SelectList?> GetDocumentConfLevelItems()
@@ -408,10 +406,8 @@ namespace NdbPortal.Web.Controllers
                 return new SelectList(items, nameof(NormativeDocumentConfidentialityLevelGetDto.Id), nameof(NormativeDocumentConfidentialityLevelGetDto.Name));
 
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         private async Task<SelectList?> GetAvailableRelatedDocumentListAsync(Guid currentDocId)
@@ -431,10 +427,8 @@ namespace NdbPortal.Web.Controllers
                 return new SelectList(items, nameof(NormativeDocumentGetDto.Id), nameof(NormativeDocumentGetDto.DocumentNumber));
 
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         private async Task<SelectList?> GetAvailableRelationTypesListAsync()
@@ -447,10 +441,8 @@ namespace NdbPortal.Web.Controllers
                 return new SelectList(items, nameof(NormativeDocumentRelationTypeGetDto.Id), nameof(NormativeDocumentRelationTypeGetDto.Name));
 
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         private async Task<IEnumerable<NormativeDocumentRelationGetWithDetailsDto>> GetRelatedDocumentsAsync(Guid id)
@@ -462,10 +454,8 @@ namespace NdbPortal.Web.Controllers
                 var items = await _webApiClient.GetEntityRecordsAsync<IEnumerable<NormativeDocumentRelationGetWithDetailsDto>>($"NormativeDocumentRelations/WithDetails/{id}", token);
                 return items ?? new List<NormativeDocumentRelationGetWithDetailsDto>();
             }
-            else
-            {
-                return new List<NormativeDocumentRelationGetWithDetailsDto>();
-            }
+
+            return new List<NormativeDocumentRelationGetWithDetailsDto>();
         }
         private async Task<IEnumerable<NormativeDocumentVisaGetWithDetailsDto>> GetVisasAsync(Guid id)
         {
@@ -476,10 +466,8 @@ namespace NdbPortal.Web.Controllers
                 var items = await _webApiClient.GetEntityRecordsAsync<IEnumerable<NormativeDocumentVisaGetWithDetailsDto>>($"NormativeDocumentVisas/WithDetails/{id}", token);
                 return items ?? new List<NormativeDocumentVisaGetWithDetailsDto>();
             }
-            else
-            {
-                return new List<NormativeDocumentVisaGetWithDetailsDto>();
-            }
+
+            return new List<NormativeDocumentVisaGetWithDetailsDto>();
         }
 
         private async Task<IEnumerable<NormativeDocumentGetWithDetailsDto>> GetVersions(Guid id)
@@ -491,10 +479,8 @@ namespace NdbPortal.Web.Controllers
                 var items = await _webApiClient.GetEntityRecordsAsync<IEnumerable<NormativeDocumentGetWithDetailsDto>>($"NormativeDocuments/Versions/{id}", token);
                 return items ?? new List<NormativeDocumentGetWithDetailsDto>();
             }
-            else
-            {
-                return new List<NormativeDocumentGetWithDetailsDto>();
-            }
+
+            return new List<NormativeDocumentGetWithDetailsDto>();
         }
 
         private async Task<IEnumerable<NormativeDocumentFileGetWithDetailsDto>> GetFilesAsync(Guid id)
@@ -506,10 +492,8 @@ namespace NdbPortal.Web.Controllers
                 var items = await _webApiClient.GetEntityRecordsAsync<IEnumerable<NormativeDocumentFileGetWithDetailsDto>>($"NormativeDocumentFiles/WithDetails/{id}", token);
                 return items ?? new List<NormativeDocumentFileGetWithDetailsDto>();
             }
-            else
-            {
-                return new List<NormativeDocumentFileGetWithDetailsDto>();
-            }
+
+            return new List<NormativeDocumentFileGetWithDetailsDto>();
         }
 
         private async Task<int?> GetNextVersionAsync(Guid mainDocumentId)
@@ -520,10 +504,8 @@ namespace NdbPortal.Web.Controllers
             {
                 return await _webApiClient.GetPrimitiveValueAsync<int>($"NormativeDocuments/MaxVersion/{mainDocumentId}", token);
             }
-            else
-            {
-                return 1;
-            }
+
+            return 1;
         }
 
 

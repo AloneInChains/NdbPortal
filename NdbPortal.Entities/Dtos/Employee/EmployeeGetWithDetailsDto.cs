@@ -1,12 +1,7 @@
-﻿using NdbPortal.Entities.Dtos.Company;
-using NdbPortal.Entities.Dtos.NormativeDocumentConfidentialityLevel;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+using NdbPortal.Entities.Dtos.Company;
+using NdbPortal.Entities.Dtos.NormativeDocumentConfidentialityLevel;
 
 namespace NdbPortal.Entities.Dtos.Employee
 {
