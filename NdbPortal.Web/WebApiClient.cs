@@ -41,12 +41,7 @@ namespace NdbPortal.Web
             var authResult = JsonSerializer.Deserialize<LoginInfoResponse>(await response.Content.ReadAsStringAsync());
             if (authResult != null)
             {
-                if (authResult.Code == 0)
-                {
-                    return authResult.Token;
-                }
-
-                return string.Empty;
+                return authResult.Code == 0 ? authResult.Token : string.Empty;
             }
 
             return string.Empty;
@@ -216,7 +211,7 @@ namespace NdbPortal.Web
                 
             if (response.StatusCode == HttpStatusCode.Conflict)
             {
-                throw new ConfictDbDeletionException();
+                throw new ConflictDbDeletionException();
             }
 
             response.EnsureSuccessStatusCode();
@@ -250,12 +245,12 @@ namespace NdbPortal.Web
 
 
     [Serializable]
-    public class ConfictDbDeletionException : Exception
+    public class ConflictDbDeletionException : Exception
     {
-        public ConfictDbDeletionException() { }
-        public ConfictDbDeletionException(string message) : base(message) { }
-        public ConfictDbDeletionException(string message, Exception inner) : base(message, inner) { }
-        protected ConfictDbDeletionException(
+        public ConflictDbDeletionException() { }
+        public ConflictDbDeletionException(string message) : base(message) { }
+        public ConflictDbDeletionException(string message, Exception inner) : base(message, inner) { }
+        protected ConflictDbDeletionException(
           SerializationInfo info,
           StreamingContext context) : base(info, context) { }
     }

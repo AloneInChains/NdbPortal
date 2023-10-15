@@ -51,7 +51,7 @@ namespace NdbPortal.Web.Controllers
 
                 await _webApiClient.DeleteRecordAsync("NormativeDocuments", documentId, token);
             }
-            catch (ConfictDbDeletionException ex)
+            catch (ConflictDbDeletionException ex)
             {
                 _logger.LogError(ex, $"Error occured deleting document (id = {documentId}");
                 TempData["DeletionError"] = "Error occured while deleting document!\nPlease delete related records first.";

@@ -172,7 +172,8 @@ namespace NdbPortal.API.Controllers
 
             var normativeDocumentRelation = await _repository.NormativeDocumentRelation.GetNormativeDocumentRelationAsync(id);
 
-            _repository.NormativeDocumentRelation.DeleteNormativeDocumentRelation(normativeDocumentRelation);
+            if (normativeDocumentRelation != null)
+                _repository.NormativeDocumentRelation.DeleteNormativeDocumentRelation(normativeDocumentRelation);
             await _repository.SaveAsync();
 
             return NoContent();

@@ -14,7 +14,7 @@ builder.Services.AddControllersWithViews(options =>
 
 builder.Services.AddHttpClient<IWebApiClient, WebApiClient>(options =>
 {
-    options.BaseAddress = new Uri(builder.Configuration["ApiUri"]);
+    options.BaseAddress = new Uri(builder.Configuration["ApiUri"]!);
     options.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 });
 

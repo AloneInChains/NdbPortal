@@ -208,7 +208,7 @@ namespace NdbPortal.Web.Controllers
             {
                 await _webApiClient.DeleteRecordAsync("NormativeDocumentFiles", recordId, token);
             }
-            catch (ConfictDbDeletionException ex)
+            catch (ConflictDbDeletionException ex)
             {
                 _logger.LogError(ex, "Error deleting visa");
                 TempData["DeletionError"] = ex.Message;
@@ -236,7 +236,7 @@ namespace NdbPortal.Web.Controllers
             {
                 await _webApiClient.DeleteRecordAsync("NormativeDocumentVisas", recordId, token);
             }
-            catch(ConfictDbDeletionException ex)
+            catch(ConflictDbDeletionException ex)
             {
                 _logger.LogError(ex, "Error deleting visa");
                 TempData["DeletionError"] = ex.Message;
@@ -264,7 +264,7 @@ namespace NdbPortal.Web.Controllers
             {
                 await _webApiClient.DeleteRecordAsync("NormativeDocumentRelations", recordId, token);
             }
-            catch (ConfictDbDeletionException ex)
+            catch (ConflictDbDeletionException ex)
             {
                 _logger.LogError(ex, "Error deleting visa");
                 TempData["DeletionError"] = ex.Message;

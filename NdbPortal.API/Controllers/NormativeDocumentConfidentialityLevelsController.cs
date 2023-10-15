@@ -135,7 +135,9 @@ namespace NdbPortal.API.Controllers
 
             var normativeDocumentConfidentialityLevel = await _repository.NormativeDocumentConfidentialityLevel.GetNormativeDocumentConfidentialityLevelAsync(id);
 
-            _repository.NormativeDocumentConfidentialityLevel.DeleteNormativeDocumentConfidentialityLevel(normativeDocumentConfidentialityLevel);
+            if (normativeDocumentConfidentialityLevel != null)
+                _repository.NormativeDocumentConfidentialityLevel.DeleteNormativeDocumentConfidentialityLevel(
+                    normativeDocumentConfidentialityLevel);
             await _repository.SaveAsync();
 
             return NoContent();

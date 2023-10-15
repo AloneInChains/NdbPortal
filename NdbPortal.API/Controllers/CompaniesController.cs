@@ -141,9 +141,9 @@ namespace NdbPortal.API.Controllers
                 return NotFound();
             }
 
-            var company = await _repository.Company.GetCompanyAsync(id);              
+            var company = await _repository.Company.GetCompanyAsync(id);
 
-            _repository.Company.DeleteCompany(company);
+            if (company != null) _repository.Company.DeleteCompany(company);
             await _repository.SaveAsync();
 
             return NoContent();

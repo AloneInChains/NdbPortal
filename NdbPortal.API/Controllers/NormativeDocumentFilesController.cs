@@ -158,7 +158,8 @@ namespace NdbPortal.API.Controllers
 
             var normativeDocumentFile = await _repository.NormativeDocumentFile.GetNormativeDocumentFileAsync(id);
 
-            _repository.NormativeDocumentFile.DeleteNormativeDocumentFile(normativeDocumentFile);
+            if (normativeDocumentFile != null)
+                _repository.NormativeDocumentFile.DeleteNormativeDocumentFile(normativeDocumentFile);
             await _repository.SaveAsync();
 
             return NoContent();
