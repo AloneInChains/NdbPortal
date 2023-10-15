@@ -34,7 +34,7 @@
                     <p>Are you sure to delete this document?</p>
                     <div class="form-group">
                         @Html.Hidden("recordId", "", new {id = "recordIdToDelete"})
-                        @Html.Hidden("normativeDocumentId", Model.NormativeDocument.Id, new {id = "normativeDocumentDeletionId"})
+                        @Html.Hidden("normativeDocumentId", Model.NormativeDocument!.Id, new {id = "normativeDocumentDeletionId"})
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -64,7 +64,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        @Html.Hidden("fileNormativeDocumentId", Model.NormativeDocument.Id)
+                        @Html.Hidden("fileNormativeDocumentId", Model.NormativeDocument!.Id)
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -88,7 +88,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        @Html.Hidden("visaNormativeDocumentId", Model.NormativeDocument.Id, new { id = "visaCommentModal_NormativeDocumentId" })
+                        @Html.Hidden("visaNormativeDocumentId", Model.NormativeDocument!.Id, new { id = "visaCommentModal_NormativeDocumentId" })
                         @Html.Hidden("approveResult")
                         <label for="visaComment">Comment:</label>
                         <textarea class="form-control" id="visaComment" name="visaComment" rows="3"></textarea>
@@ -123,7 +123,7 @@
                         <select name="relationTypeId" asp-items="Model.AvailableRelationTypeList" class="form-control dropdown"></select>
                     </div>
                     <div class="form-group">
-                        @Html.Hidden("relationDocumentId", Model.NormativeDocument.Id)
+                        @Html.Hidden("relationDocumentId", Model.NormativeDocument!.Id)
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Save</button>
@@ -174,7 +174,7 @@
     </div>
     <div class="col-sm-6 ">
         <div class="float-end">
-            @if(Model.NormativeDocument.MainDocumentId == null)
+            @if(Model.NormativeDocument!.MainDocumentId == null)
             {
                  <button class="btn btn-outline-success" onclick="location.href='@Url.Action("CreateVersion", new {mainDocumentId = Model.NormativeDocument.Id})'">
                     <i class="fa-solid fa-code-branch"></i>Add new version
@@ -194,12 +194,12 @@
             <form id="mainFieldsForm" asp-action="Update">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
-                    @Html.HiddenFor(m => m.NormativeDocument.Id, new {})
-                    @Html.HiddenFor(m => m.NormativeDocument.CompanyId, new {})
-                    @Html.HiddenFor(m => m.NormativeDocument.CreatedById, new {})
-                    @Html.HiddenFor(m => m.NormativeDocument.MainDocumentId, new {})
-                    @Html.HiddenFor(m => m.NormativeDocument.VersionNumber, new {})
-                    @Html.HiddenFor(m => m.NormativeDocument.CreatedOn, new {})
+                    @Html.HiddenFor(m => m.NormativeDocument!.Id, new {})
+                    @Html.HiddenFor(m => m.NormativeDocument!.CompanyId, new {})
+                    @Html.HiddenFor(m => m.NormativeDocument!.CreatedById, new {})
+                    @Html.HiddenFor(m => m.NormativeDocument!.MainDocumentId, new {})
+                    @Html.HiddenFor(m => m.NormativeDocument!.VersionNumber, new {})
+                    @Html.HiddenFor(m => m.NormativeDocument!.CreatedOn, new {})
                 </div>
                 <div class="form-group">
                     <label asp-for="@Model.NormativeDocument.DocumentNumber" class="control-label"></label>
@@ -242,7 +242,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="@Model.NormativeDocument.CreatedBy" class="control-label"></label>
-                    <input class="form-control" value="@Model.NormativeDocument.CreatedBy?.Name @Model.NormativeDocument.CreatedBy.Surname" disabled />
+                    <input class="form-control" value="@Model.NormativeDocument.CreatedBy?.Name @Model.NormativeDocument.CreatedBy!.Surname" disabled />
                 </div>
                 <div class="form-group">
                     <label asp-for="@Model.NormativeDocument.Company" class="control-label"></label>
@@ -387,7 +387,7 @@
                                 <tr>
                                     <td><a asp-action="Edit" asp-route-id="@version.Id">@version.DocumentNumber</a></td>
                                     <td>@version.VersionNumber</td>
-                                    <td>@string.Format("{0} {1}", version.CreatedBy?.Name, version.CreatedBy.Surname)</td>
+                                    <td>@($"{version.CreatedBy?.Name} {version.CreatedBy!.Surname}")</td>
                                     <td>@version.CreatedOn.ToString("dd.MM.yyyy HH:mm")</td>
                                 </tr>
                             }

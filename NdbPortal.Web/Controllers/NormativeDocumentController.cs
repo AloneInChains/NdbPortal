@@ -137,7 +137,7 @@ namespace NdbPortal.Web.Controllers
             string? token = HttpContext.Session.GetString("JWToken");
             var employee = (Employee?)HttpContext.Items["User"];
 
-            vm.NormativeDocument.Id = Guid.NewGuid();
+            vm.NormativeDocument!.Id = Guid.NewGuid();
             vm.NormativeDocument.CreatedOn = DateTime.Now;
             if (employee != null)
             {
@@ -145,7 +145,7 @@ namespace NdbPortal.Web.Controllers
                 vm.NormativeDocument.CompanyId = employee.CompanyId;
             }
 
-            await _webApiClient.AddRecordAsync("NormativeDocuments", vm.NormativeDocument, token);
+            await _webApiClient.AddRecordAsync("NormativeDocuments", vm.NormativeDocument, token!);
             Response.Headers.Add("CreatedNormativeDocumentId", vm.NormativeDocument.Id.ToString());
 
             return RedirectToAction("Index", "Home");
@@ -189,7 +189,7 @@ namespace NdbPortal.Web.Controllers
 
             string? token = HttpContext.Session.GetString("JWToken");
 
-            await _webApiClient.EditRecordAsync("NormativeDocuments", vm.NormativeDocument.Id, vm.NormativeDocument, token);
+            await _webApiClient.EditRecordAsync("NormativeDocuments", vm.NormativeDocument!.Id, vm.NormativeDocument, token);
 
             return RedirectToAction("Index", "Home");
         }
@@ -292,7 +292,7 @@ namespace NdbPortal.Web.Controllers
                 RelationTypeId = relationTypeId
             };
 
-            await _webApiClient.AddRecordAsync("NormativeDocumentRelations", relation, token);
+            await _webApiClient.AddRecordAsync("NormativeDocumentRelations", relation, token!);
 
             var vm = new NormativeDocumentViewModel();
             vm.NormativeDocumentTypeList = await GetDocumentTypeItems();
@@ -300,7 +300,7 @@ namespace NdbPortal.Web.Controllers
             vm.RelatedDocuments = await GetRelatedDocumentsAsync(relationDocumentId);
             vm.AvailableRelatedDocumentList = await GetAvailableRelatedDocumentListAsync(relationDocumentId);
             vm.AvailableRelationTypeList = await GetAvailableRelationTypesListAsync();
-            var normativeDocuments = await _webApiClient.GetEntityRecordsAsync<IEnumerable<NormativeDocumentGetWithDetailsDto>?>("NormativeDocument", token);
+            var normativeDocuments = await _webApiClient.GetEntityRecordsAsync<IEnumerable<NormativeDocumentGetWithDetailsDto>?>("NormativeDocument", token!);
 
             if (normativeDocuments != null)
             {
