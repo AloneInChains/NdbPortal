@@ -1,15 +1,16 @@
-﻿using AutoMapper;
+﻿using System.Globalization;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using NdbPortal.API.Models;
-using NdbPortal.Entities.Dtos.Login;
 using NdbPortal.Contracts;
 using NdbPortal.Entities;
 using NdbPortal.Entities.Dtos.Employee;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using NdbPortal.Entities.Dtos.Login;
 
 namespace NdbPortal.API.Controllers
 {
@@ -42,7 +43,7 @@ namespace NdbPortal.API.Controllers
                 {
                     new Claim(JwtRegisteredClaimNames.Sub, _jwtOptionsMonitor.CurrentValue.Subject),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture)),
                     new Claim("Id", employeesResult.Id.ToString()),
                     new Claim("Email", employeesResult.Email),
                     new Claim("Password", employeesResult.Password)

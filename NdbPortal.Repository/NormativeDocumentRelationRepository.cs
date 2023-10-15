@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NdbPortal.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NdbPortal.Repository
 {
@@ -14,14 +9,14 @@ namespace NdbPortal.Repository
         {
         }
 
-        public void CreateNormativeDocumentRelation(NormativeDocumentRelation normativeDocumentRelation)
+        public void CreateNormativeDocumentRelation(NormativeDocumentRelation documentRelation)
         {
-            RepositoryContext.Add(normativeDocumentRelation);
+            RepositoryContext.Add(documentRelation);
         }
 
-        public void DeleteNormativeDocumentRelation(NormativeDocumentRelation normativeDocumentRelation)
+        public void DeleteNormativeDocumentRelation(NormativeDocumentRelation documentRelation)
         {
-            RepositoryContext.Remove(normativeDocumentRelation);
+            RepositoryContext.Remove(documentRelation);
         }
 
         public async Task<IEnumerable<NormativeDocumentRelation>> GetAllNormativeDocumentRelationsAsync()
@@ -29,14 +24,14 @@ namespace NdbPortal.Repository
             return await GetAll().OrderBy(x => x.Id).ToListAsync();
         }
 
-        public async Task<NormativeDocumentRelation> GetNormativeDocumentRelationAsync(Guid id)
+        public async Task<NormativeDocumentRelation?> GetNormativeDocumentRelationAsync(Guid id)
         {
             return await GetWithWhere(x => x.Id == id).FirstOrDefaultAsync();
         }
 
-        public void UpdateNormativeDocumentRelation(NormativeDocumentRelation normativeDocumentRelation)
+        public void UpdateNormativeDocumentRelation(NormativeDocumentRelation documentRelation)
         {
-            RepositoryContext.Update(normativeDocumentRelation);
+            RepositoryContext.Update(documentRelation);
         }
     }
 }

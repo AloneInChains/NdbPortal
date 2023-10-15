@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace NdbPortal.Entities.Models
+﻿namespace NdbPortal.Entities.Models
 {
-    public partial class NormativeDocument
+    public sealed class NormativeDocument
     {
         public NormativeDocument()
         {
@@ -24,14 +21,14 @@ namespace NdbPortal.Entities.Models
         public int? VersionNumber { get; set; }
         public Guid? ConfidentialityLevelId { get; set; }
 
-        public virtual Company Company { get; set; } = null!;
-        public virtual NormativeDocumentConfidentialityLevel? ConfidentialityLevel { get; set; }
-        public virtual Employee CreatedBy { get; set; } = null!;
-        public virtual NormativeDocumentType? DocumentType { get; set; }
-        public virtual NormativeDocument? MainDocument { get; set; }
-        public virtual ICollection<NormativeDocument> InverseMainDocument { get; set; }
-        public virtual ICollection<NormativeDocumentRelation> NormativeDocumentRelationRelatedDocuments { get; set; }
-        public virtual ICollection<NormativeDocumentRelation> NormativeDocumentRelationRelationDocuments { get; set; }
-        public virtual ICollection<NormativeDocumentVisa> NormativeDocumentVisas { get; set; }
+        public Company Company { get; set; } = null!;
+        public NormativeDocumentConfidentialityLevel? ConfidentialityLevel { get; set; }
+        public Employee CreatedBy { get; set; } = null!;
+        public NormativeDocumentType? DocumentType { get; set; }
+        public NormativeDocument? MainDocument { get; set; }
+        public ICollection<NormativeDocument> InverseMainDocument { get; set; }
+        public ICollection<NormativeDocumentRelation> NormativeDocumentRelationRelatedDocuments { get; set; }
+        public ICollection<NormativeDocumentRelation> NormativeDocumentRelationRelationDocuments { get; set; }
+        public ICollection<NormativeDocumentVisa> NormativeDocumentVisas { get; set; }
     }
 }

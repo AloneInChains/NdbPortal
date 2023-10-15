@@ -1,6 +1,6 @@
-﻿using NdbPortal.Entities.Dtos.Employee;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using NdbPortal.Entities.Dtos.Employee;
 
 namespace NdbPortal.Entities.Dtos.NormativeDocumentFile
 {

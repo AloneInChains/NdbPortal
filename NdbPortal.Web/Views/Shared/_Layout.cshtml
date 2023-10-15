@@ -22,7 +22,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 </div>
                 <div class="justify-content-end">
-                    <form method="post" asp-action="Logout">
+                    <form method="post" asp-controller="Home" asp-action="Logout">
                         <span class="text-decoration-underline">Hello, @ViewBag.EmployeeName!</span>
                         <input type="submit" class="btn btn-danger text-end" value="Log out"/>
                     </form>

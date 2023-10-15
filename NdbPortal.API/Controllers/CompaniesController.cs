@@ -1,17 +1,12 @@
 ﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using NdbPortal.Entities.Dtos.Company;
-using NdbPortal.Contracts;
-using NdbPortal.Entities;
-using NdbPortal.Entities.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using NdbPortal.Contracts;
+using NdbPortal.Entities;
+using NdbPortal.Entities.Dtos.Company;
+using NdbPortal.Entities.Models;
 
 namespace NdbPortal.API.Controllers
 {
@@ -84,10 +79,8 @@ namespace NdbPortal.API.Controllers
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
 
             return NoContent();
@@ -125,11 +118,9 @@ namespace NdbPortal.API.Controllers
                     _logger.LogError("Error in PostCompany, company already exists");
                     return Conflict();
                 }
-                else
-                {
-                    _logger.LogError("Error in PostCompany", ex.Message);
-                    throw;
-                }
+
+                _logger.LogError("Error in PostCompany", ex.Message);
+                throw;
             }
             catch (Exception ex)
             {
@@ -150,9 +141,9 @@ namespace NdbPortal.API.Controllers
                 return NotFound();
             }
 
-            var company = await _repository.Company.GetCompanyAsync(id);              
+            var company = await _repository.Company.GetCompanyAsync(id);
 
-            _repository.Company.DeleteCompany(company);
+            if (company != null) _repository.Company.DeleteCompany(company);
             await _repository.SaveAsync();
 
             return NoContent();

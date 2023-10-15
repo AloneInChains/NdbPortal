@@ -1,9 +1,9 @@
-﻿using NdbPortal.Entities.Dtos.Company;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using NdbPortal.Entities.Dtos.Company;
 using NdbPortal.Entities.Dtos.Employee;
 using NdbPortal.Entities.Dtos.NormativeDocumentConfidentialityLevel;
 using NdbPortal.Entities.Dtos.NormativeDocumentType;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
 namespace NdbPortal.Entities.Dtos.NormativeDocument
 {
@@ -36,7 +36,7 @@ namespace NdbPortal.Entities.Dtos.NormativeDocument
 
         [Display(Name = "Created by")]
         [JsonPropertyName("createdBy")]
-        public EmployeeGetDto? CreatedBy { get; set; } = null!;
+        public EmployeeGetDto? CreatedBy { get; set; }
 
         [Display(Name = "Description")]
         [JsonPropertyName("description")]

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace NdbPortal.Entities.Models
+﻿namespace NdbPortal.Entities.Models
 {
-    public partial class NormativeDocumentFile
+    public class NormativeDocumentFile
     {
         public Guid Id { get; set; }
         public Guid NormativeDocumentId { get; set; }

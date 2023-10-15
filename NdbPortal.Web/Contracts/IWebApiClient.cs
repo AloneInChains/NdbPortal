@@ -12,13 +12,13 @@ namespace NdbPortal.Web.Contracts
 
         Task<Employee?> GetEmployeeByIdAsync(string token, Guid id);
 
-        Task<IEnumerable<NormativeDocumentGetWithDetailsDto>?> GetNormativeDocumentsByEmployeeIdAsync(string token, Guid employeeId);
+        Task<IEnumerable<NormativeDocumentGetWithDetailsDto>?> GetNormativeDocumentsByEmployeeIdAsync(string? token, Guid employeeId);
 
         Task<T?> GetEntityRecordsAsync<T>(string entityPath, string token);
 
         Task AddRecordAsync<T>(string entityName, T record, string token);
 
-        Task EditRecordAsync<T>(string entityName, Guid id, T record, string token);
+        Task EditRecordAsync<T>(string entityName, Guid id, T record, string? token);
 
         Task DeleteRecordAsync(string entityPath, Guid id, string token);
 

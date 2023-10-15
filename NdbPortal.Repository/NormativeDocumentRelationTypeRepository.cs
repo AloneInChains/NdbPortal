@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NdbPortal.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NdbPortal.Repository
 {
@@ -29,7 +24,7 @@ namespace NdbPortal.Repository
             return await GetAll().OrderBy(x => x.Name).ToListAsync();
         }
 
-        public async Task<NormativeDocumentRelationType> GetNormativeDocumentRelationTypeAsync(Guid id)
+        public async Task<NormativeDocumentRelationType?> GetNormativeDocumentRelationTypeAsync(Guid id)
         {
             return await GetWithWhere(x => x.Id == id).FirstOrDefaultAsync();
         }

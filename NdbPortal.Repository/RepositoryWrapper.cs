@@ -1,10 +1,5 @@
-﻿using NdbPortal.Contracts;
+﻿#nullable disable
 using NdbPortal.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NdbPortal.Repository
 {
@@ -29,120 +24,29 @@ namespace NdbPortal.Repository
 
         public ICompanyRepository Company
         {
-            get 
-            { 
-                if (_company == null)
-                {
-                    _company = new CompanyRepository(_nDbContext);
-                }
-
-                return _company;
-            }
+            get { return _company ??= new CompanyRepository(_nDbContext); }
         }
-        public IEmployeeRepository Employee
-        {
-            get
-            {
-                if (_employee == null)
-                {
-                    _employee = new EmployeeRepository(_nDbContext);
-                }
+        public IEmployeeRepository Employee => _employee ??= new EmployeeRepository(_nDbContext);
 
-                return _employee;
-            }
-        }
+        public INormativeDocumentConfidentialityLevelRepository NormativeDocumentConfidentialityLevel =>
+            _normativeDocumentConfidentialityLevel ??= new NormativeDocumentConfidentialityLevelRepository(_nDbContext);
 
-        public INormativeDocumentConfidentialityLevelRepository NormativeDocumentConfidentialityLevel
-        {
-            get
-            {
-                if (_normativeDocumentConfidentialityLevel == null)
-                {
-                    _normativeDocumentConfidentialityLevel = new NormativeDocumentConfidentialityLevelRepository(_nDbContext);
-                }
+        public INormativeDocumentFileRepository NormativeDocumentFile =>
+            _normativeDocumentFile ??= new NormativeDocumentFileRepository(_nDbContext);
 
-                return _normativeDocumentConfidentialityLevel;
-            }
-        }
+        public INormativeDocumentRelationRepository NormativeDocumentRelation =>
+            _normativeDocumentRelation ??= new NormativeDocumentRelationRepository(_nDbContext);
 
-        public INormativeDocumentFileRepository NormativeDocumentFile
-        {
-            get
-            {
-                if (_normativeDocumentFile == null)
-                {
-                    _normativeDocumentFile = new NormativeDocumentFileRepository(_nDbContext);
-                }
+        public INormativeDocumentRelationTypeRepository NormativeDocumentRelationType =>
+            _normativeDocumentRelationType ??= new NormativeDocumentRelationTypeRepository(_nDbContext);
 
-                return _normativeDocumentFile;
-            }
-        }
+        public INormativeDocumentVisaRepository NormativeDocumentVisa =>
+            _normativeDocumentVisa ??= new NormativeDocumentVisaRepository(_nDbContext);
 
-        public INormativeDocumentRelationRepository NormativeDocumentRelation 
-        { 
-            get
-            {
-                if (_normativeDocumentRelation == null)
-                {
-                    _normativeDocumentRelation = new NormativeDocumentRelationRepository(_nDbContext);
-                }
+        public INormativeDocumentRepository NormativeDocument => _normativeDocument ??= new NormativeDocumentRepository(_nDbContext);
 
-                return _normativeDocumentRelation;
-            }        
-        }
-
-        public INormativeDocumentRelationTypeRepository NormativeDocumentRelationType 
-        { 
-            get
-            {
-                if (_normativeDocumentRelationType == null)
-                {
-                    _normativeDocumentRelationType = new NormativeDocumentRelationTypeRepository(_nDbContext);
-                }
-
-                return _normativeDocumentRelationType;
-            }
-        }
-
-        public INormativeDocumentVisaRepository NormativeDocumentVisa 
-        { 
-            get
-            {
-                if (_normativeDocumentVisa == null)
-                {
-                    _normativeDocumentVisa = new NormativeDocumentVisaRepository(_nDbContext);
-                }
-
-                return _normativeDocumentVisa;
-
-            }
-        }
-
-        public INormativeDocumentRepository NormativeDocument
-        {
-            get
-            {
-                if (_normativeDocument == null)
-                {
-                    _normativeDocument = new NormativeDocumentRepository(_nDbContext);
-                }
-
-                return _normativeDocument;
-            }
-        }
-
-        public INormativeDocumentTypeRepository NormativeDocumentType
-        {
-            get
-            {
-                if (_normativeDocumentType == null)
-                {
-                    _normativeDocumentType = new NormativeDocumentTypeRepository(_nDbContext);
-                }
-
-                return _normativeDocumentType;
-            }
-        }
+        public INormativeDocumentTypeRepository NormativeDocumentType =>
+            _normativeDocumentType ??= new NormativeDocumentTypeRepository(_nDbContext);
 
         public async Task SaveAsync()
         {

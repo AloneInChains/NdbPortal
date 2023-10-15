@@ -6,7 +6,6 @@ using NdbPortal.Contracts;
 using NdbPortal.Entities;
 using NdbPortal.Entities.Dtos.NormativeDocument;
 using NdbPortal.Entities.Models;
-using System.Runtime.InteropServices;
 
 namespace NdbPortal.API.Controllers
 {
@@ -51,7 +50,7 @@ namespace NdbPortal.API.Controllers
                 .Include(n => n.ConfidentialityLevel)
                 .Include(n => n.CreatedBy)
                 .Include(n => n.Company)
-                .Where(x => x.ConfidentialityLevel.OrderNumber <= employeeConfidentialityLevel.OrderNumber && x.CompanyId == employee.CompanyId || x.CreatedById == employeeId).AsNoTracking().ToListAsync();
+                .Where(x => x.ConfidentialityLevel != null && (x.ConfidentialityLevel.OrderNumber <= employeeConfidentialityLevel!.OrderNumber && x.CompanyId == employee.CompanyId || x.CreatedById == employeeId)).AsNoTracking().ToListAsync();
             var normativeDocumentsResult = _mapper.Map<IEnumerable<NormativeDocumentGetWithDetailsDto>>(normativeDocuments);
 
             return Ok(normativeDocumentsResult);

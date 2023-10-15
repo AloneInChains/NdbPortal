@@ -18,15 +18,12 @@ namespace NdbPortal.Web
             var licenseBase64 = _configuration["AsposeLicense"];
             if (!string.IsNullOrEmpty(licenseBase64))
             {
-                byte[] licenseBytes = System.Convert.FromBase64String(licenseBase64);
+                byte[] licenseBytes = Convert.FromBase64String(licenseBase64);
                 var license = new License();
                 license.SetLicense(new MemoryStream(licenseBytes));
             }
-            else
-            {
-                // Handle the case where the license is not configured
-                // You may throw an exception or log a warning
-            }
+            // Handle the case where the license is not configured
+            // You may throw an exception or log a warning
         }
     }
 }
