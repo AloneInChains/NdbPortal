@@ -195,7 +195,7 @@ namespace NdbPortal.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteFile(Guid recordId, Guid documentId)
+        public async Task<IActionResult> DeleteFile(Guid recordId, Guid normativeDocumentId)
         {
             string? token = HttpContext.Session.GetString("JWToken");
 
@@ -218,12 +218,12 @@ namespace NdbPortal.Web.Controllers
                 _logger.LogError(ex, "Error deleting visa");
                 TempData["DeletionError"] = ex.Message;
             }
-            return RedirectToAction("Edit", new { Id = documentId });
+            return RedirectToAction("Edit", new { Id = normativeDocumentId });
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> DeleteVisa(Guid recordId, Guid documentId)
+        public async Task<IActionResult> DeleteVisa(Guid recordId, Guid normativeDocumentId)
         {
             string? token = HttpContext.Session.GetString("JWToken");
 
@@ -247,11 +247,11 @@ namespace NdbPortal.Web.Controllers
                 TempData["DeletionError"] = ex.Message;
             }
 
-            return RedirectToAction("Edit", new { Id = documentId });
+            return RedirectToAction("Edit", new { Id = normativeDocumentId });
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteRelatedDocument(Guid recordId, Guid documentId)
+        public async Task<IActionResult> DeleteRelatedDocument(Guid recordId, Guid normativeDocumentId)
         {
             string? token = HttpContext.Session.GetString("JWToken");
 
@@ -275,7 +275,7 @@ namespace NdbPortal.Web.Controllers
                 TempData["DeletionError"] = ex.Message;
             }
 
-            return RedirectToAction("Edit", new { Id = documentId });
+            return RedirectToAction("Edit", new { Id = normativeDocumentId });
         }
 
         [HttpPost]
