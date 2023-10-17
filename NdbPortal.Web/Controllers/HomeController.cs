@@ -38,7 +38,7 @@ namespace NdbPortal.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(Guid documentId)
+        public async Task<IActionResult> Delete(Guid normativeDocumentId)
         {
 
             try
@@ -49,16 +49,16 @@ namespace NdbPortal.Web.Controllers
                     return RedirectToAction("Index", "Login");
                 }
 
-                await _webApiClient.DeleteRecordAsync("NormativeDocuments", documentId, token);
+                await _webApiClient.DeleteRecordAsync("NormativeDocuments", normativeDocumentId, token);
             }
             catch (ConflictDbDeletionException ex)
             {
-                _logger.LogError(ex, $"Error occured deleting document (id = {documentId}");
-                TempData["DeletionError"] = "Error occured while deleting document!\nPlease delete related records first.";
+                _logger.LogError(ex, $"Error occurred deleting document (id = {normativeDocumentId}");
+                TempData["DeletionError"] = "Error occurred while deleting document!\nPlease delete related records first.";
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error occured deleting document (id = {documentId}");
+                _logger.LogError(ex, $"Error occurred deleting document (id = {normativeDocumentId}");
                 TempData["DeletionError"] = "Unknown error deleting document";
             }
             return RedirectToAction("Index");
